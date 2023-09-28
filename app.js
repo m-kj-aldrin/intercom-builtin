@@ -221,9 +221,9 @@ export class COMModule extends Base {
 
     remove() {
         //TODO - Is this need ?? How does OUTS refere to the modules they are attached to?
-        // this.querySelectorAll("com-out").forEach((o) => {
-        //     o.emmitLifeCycle({ type: "disconnected" });
-        // });
+        this.querySelectorAll("com-out").forEach((o) => {
+            o.emmitLifeCycle({ type: "disconnected" });
+        });
         return super.remove();
     }
 }
@@ -319,15 +319,11 @@ export class COMOut extends Base {
 
         draggable(this);
 
-        // this.shadowRoot.addEventListener("change", (e) => {
-        //     console.log(e);
-        // });
-
         this.shadowRoot.addEventListener("com:bus:out", (e) => {
             this.emmitLifeCycle({ type: "disconnect" });
 
             document.querySelectorAll("com-out").forEach((out) => {
-                if (out.index > this.index) {
+                if (out.index >= this.index) {
                     out.index = out.index - 1;
                 }
             });
@@ -361,14 +357,21 @@ export class COMOut extends Base {
 
         this._init = true;
 
+        document.querySelectorAll("com-out").forEach((out) => {
+            if (out.index > this.index) {
+                out.index = out.index + 1;
+            }
+        });
+
         super.connectedCallback();
-        this._openConnection = false;
+        //TODO - This is needed if the outs doesnt need to be reattached everytime a module is moved
+        // this._openConnection = false;
     }
 
     disconnectedCallback() {
         N_OUTS--;
         document.querySelectorAll("com-out").forEach((out) => {
-            if (out.index > this.index) {
+            if (out.index >= this.index) {
                 out.index = out.index - 1;
             }
         });
@@ -467,8 +470,6 @@ document.body.innerHTML += `
         <com-module type="LFO"></com-module>
         <com-module type="PROB"></com-module>
         <com-module>
-            <com-out></com-out>
-            <com-out></com-out>
             <com-out></com-out>
             <com-out></com-out>
         </com-module>
