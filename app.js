@@ -102,22 +102,21 @@ export class COMNetwork extends Base {
 
             if (COMOut) {
                 s += `out: ${COMOut.index}\n`;
+
+                if (type == "connected") {
+                    const cv = emitter.cv;
+                    const gt = emitter.gt;
+
+                    s += `cv - pid: ${cv.pid.value} ch: ${cv.ch.value}\ngt - pid: ${gt.pid.value} ch: ${gt.ch.value}`;
+                }
             }
 
             if (COMParameter) {
-                s += `parameter: ${COMParameter.index}\n`;
-            }
-
-            if (_COMPeriphial) {
-                s += `periphial: ${COMPeriphial.index}\n`;
-            }
-
-            if (COMOut && type == "change") {
-                const cv = emitter.cv;
-                const gt = emitter.gt;
-
-                s += `cv - pid: ${cv.pid.value} ch: ${cv.ch.value}
-gt - pid: ${gt.pid.value} ch: ${gt.ch.value}`;
+                s += `parameter: ${COMParameter.index}`;
+                if (type == "change") {
+                    s += ` v: ${COMParameter.value}`;
+                }
+                s += "\n";
             }
 
             console.log(s);
@@ -222,9 +221,9 @@ export class COMModule extends Base {
 
     remove() {
         //TODO - Is this need ?? How does OUTS refere to the modules they are attached to?
-        this.querySelectorAll("com-out").forEach((o) => {
-            o.emmitLifeCycle({ type: "disconnected" });
-        });
+        // this.querySelectorAll("com-out").forEach((o) => {
+        //     o.emmitLifeCycle({ type: "disconnected" });
+        // });
         return super.remove();
     }
 }
@@ -264,6 +263,10 @@ export class COMParameter extends Base {
 
     set value(v) {
         this.shadowRoot.querySelector("input").value = v;
+    }
+
+    get value() {
+        return this.shadowRoot.querySelector("input").value;
     }
 
     set name(n) {
@@ -321,7 +324,17 @@ export class COMOut extends Base {
         // });
 
         this.shadowRoot.addEventListener("com:bus:out", (e) => {
-            this.emmitLifeCycle({ type: "change" });
+            this.emmitLifeCycle({ type: "disconnect" });
+
+            document.querySelectorAll("com-out").forEach((out) => {
+                if (out.index > this.index) {
+                    out.index = out.index - 1;
+                }
+            });
+
+            this.index = N_OUTS - 1;
+
+            this.emmitLifeCycle({ type: "connected" });
         });
     }
 
@@ -349,7 +362,7 @@ export class COMOut extends Base {
         this._init = true;
 
         super.connectedCallback();
-        // this._openConnection = false;
+        this._openConnection = false;
     }
 
     disconnectedCallback() {
