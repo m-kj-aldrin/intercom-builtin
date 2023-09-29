@@ -2,11 +2,11 @@ import "./menu.js";
 import { dragZone, draggable } from "./drag.js";
 
 class Base extends HTMLElement {
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this.attachShadow({ mode: "open" });
-        this.shadowRoot.innerHTML += `
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.innerHTML += `
     <style>
 
         *{
@@ -26,140 +26,171 @@ class Base extends HTMLElement {
     </style>
     `;
 
-        this.addEventListener("com:bus", (e) => {
-            e.detail[this.constructor.name] = this;
-        });
+    this.addEventListener("com:bus", (e) => {
+      e.detail[this.constructor.name] = this;
+    });
 
-        this._init = false;
-        this._openConnection = true;
+    this._init = false;
+    this._openConnection = true;
+  }
+
+  connectedCallback() {
+    if (this._openConnection) {
+      this.emmitLifeCycle({ type: "connected" });
+    }
+  }
+
+  remove() {
+    if (!this.parentElement) return tihs;
+    this.emmitLifeCycle({ type: "disconnected" });
+    const el = this.parentElement.removeChild(this);
+    return el;
+  }
+
+  emmitLifeCycle({ type, emitter = this, composed = false }) {
+    this.dispatchEvent(
+      new CustomEvent("com:bus", {
+        bubbles: true,
+        composed,
+        detail: {
+          type,
+          emitter,
+        },
+      })
+    );
+  }
+
+  get index() {
+    if (!this.parentElement) return -1;
+    const children = this.parentElement.children;
+
+    let i = 0;
+
+    for (const child of children) {
+      if (child == this) return i;
+      i++;
     }
 
-    connectedCallback() {
-        if (this._openConnection) {
-            this.emmitLifeCycle({ type: "connected" });
-        }
-    }
-
-    remove() {
-        if (!this.parentElement) return tihs;
-        this.emmitLifeCycle({ type: "disconnected" });
-        const el = this.parentElement.removeChild(this);
-        return el;
-    }
-
-    emmitLifeCycle({ type, emitter = this, composed = false }) {
-        this.dispatchEvent(
-            new CustomEvent("com:bus", {
-                bubbles: true,
-                composed,
-                detail: {
-                    type,
-                    emitter,
-                },
-            })
-        );
-    }
-
-    get index() {
-        if (!this.parentElement) return -1;
-        const children = this.parentElement.children;
-
-        let i = 0;
-
-        for (const child of children) {
-            if (child == this) return i;
-            i++;
-        }
-
-        return -1;
-    }
+    return -1;
+  }
 }
 
 export class COMNetwork extends Base {
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this.addEventListener("com:bus", (e) => {
-            const {
-                type,
-                emitter,
-                COMChain,
-                COMModule,
-                COMOut,
-                COMParameter,
-                _COMPeriphial,
-            } = e.detail;
+    this.addEventListener("com:bus", (e) => {
+      const {
+        type,
+        emitter,
+        COMChain,
+        COMModule,
+        COMOut,
+        COMParameter,
+        _COMPeriphial,
+      } = e.detail;
 
-            let s = `${emitter.constructor.name} ${type}\n`;
+      let s = `${emitter.constructor.name} ${type}\n`;
 
-            if (COMChain) {
-                s += `chain: ${COMChain.index}\n`;
-            }
+      if (COMChain) {
+        s += `chain: ${COMChain.index}\n`;
+        if (type == "change") {
+          const cv = COMChain.cv;
+          const gt = COMChain.gt;
+          //   console.log(cv.pid.value, cv.ch.value, gt.pid.value, gt.ch.value);
 
-            if (COMModule) {
-                s += `module: ${COMModule.index}\n`;
-            }
+          s += `cv - pid: ${cv.pid.value} ch: ${cv.ch.value}\ngt - pid: ${gt.pid.value} ch: ${gt.ch.value}\n`;
+        }
+      }
 
-            if (COMOut) {
-                s += `out: ${COMOut.index}\n`;
+      if (COMModule) {
+        s += `module: ${COMModule.index}\n`;
+      }
 
-                if (type == "connected") {
-                    const cv = emitter.cv;
-                    const gt = emitter.gt;
+      if (COMOut) {
+        s += `out: ${COMOut.index}\n`;
 
-                    s += `cv - pid: ${cv.pid.value} ch: ${cv.ch.value}\ngt - pid: ${gt.pid.value} ch: ${gt.ch.value}`;
-                }
-            }
+        if (type == "connected") {
+          const cv = emitter.cv;
+          const gt = emitter.gt;
 
-            if (COMParameter) {
-                s += `parameter: ${COMParameter.index}`;
-                if (type == "change") {
-                    s += ` v: ${COMParameter.value}`;
-                }
-                s += "\n";
-            }
+          s += `cv - pid: ${cv.pid.value} ch: ${cv.ch.value}\ngt - pid: ${gt.pid.value} ch: ${gt.ch.value}`;
+        }
+      }
 
-            console.log(s);
-        });
+      if (COMParameter) {
+        s += `parameter: ${COMParameter.index}`;
+        if (type == "change") {
+          s += ` v: ${COMParameter.value}`;
+        }
+        s += "\n";
+      }
 
-        this.shadowRoot.innerHTML += `
+      console.log(s);
+    });
+
+    this.shadowRoot.innerHTML += `
         <x-flex row>
             <slot></slot>
         </x-flex>
         `;
-    }
+  }
 }
 
 export class COMChain extends Base {
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this.shadowRoot.innerHTML += `
+    this.shadowRoot.innerHTML += `
+    <style>
+        #input {
+            flex-grow: 0;
+            justify-content: space-between;
+        }
+    </style>
+    
+    <x-flex id="input" row>
+        <com-periphial id="cv"></com-periphial>
+        <com-periphial id="gt"></com-periphial>
+    </x-flex>
+
     <x-flex>
         <slot></slot>
     </x-flex>
     `;
 
-        dragZone(this, COMModule);
-    }
+    dragZone(this, COMModule);
+
+    this.shadowRoot.addEventListener("com:bus:periphial", (e) => {
+      this.emmitLifeCycle({ type: "change" });
+    });
+  }
+
+  get cv() {
+    return this.shadowRoot.getElementById("cv");
+  }
+
+  get gt() {
+    return this.shadowRoot.getElementById("gt");
+  }
 }
 
 const MODULE_TYPES = {
-    PTH: [],
-    LFO: [
-        { name: "AMP", value: 0.5 },
-        { name: "FREQ", value: 0.125 },
-    ],
-    PROB: [{ name: "CHNS", value: 0.5 }],
+  PTH: [],
+  LFO: [
+    { name: "AMP", value: 0.5 },
+    { name: "FREQ", value: 0.125 },
+  ],
+  PROB: [{ name: "CHNS", value: 0.5 }],
 };
 
 /**@typedef {keyof typeof MODULE_TYPES} ModuleTypes */
 
 export class COMModule extends Base {
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this.shadowRoot.innerHTML += `
+    this.shadowRoot.innerHTML += `
     <style>
 
         input{
@@ -176,7 +207,6 @@ export class COMModule extends Base {
 
         #outs {
             padding: 4px;
-            background-color: red;
         }
 
 
@@ -186,53 +216,53 @@ export class COMModule extends Base {
 
     <x-flex id="parameters"></x-flex>
 
-    <x-flex id="outs" row>
+    <x-flex id="outs" >
         <slot></slot>
     </x-flex>
     `;
 
-        draggable(this);
-        dragZone(this, COMOut, true);
+    draggable(this);
+    dragZone(this, COMOut, true);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    if (!this._init) {
+      /**@type {ModuleTypes} */
+      const type = this.getAttribute("type") ?? "PTH";
+      if (type == "PTH") return;
+      const parameters = MODULE_TYPES[type];
+
+      const ps = parameters.map((p, i) => {
+        /**@type {COMParameter} */
+        const pEl = document.createElement("com-parameter");
+        pEl.value = p.value;
+        pEl.name = p.name;
+
+        return pEl;
+      });
+
+      this.shadowRoot.getElementById("parameters").append(...ps);
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    this._init = true;
+  }
 
-        if (!this._init) {
-            /**@type {ModuleTypes} */
-            const type = this.getAttribute("type") ?? "PTH";
-            if (type == "PTH") return;
-            const parameters = MODULE_TYPES[type];
-
-            const ps = parameters.map((p, i) => {
-                /**@type {COMParameter} */
-                const pEl = document.createElement("com-parameter");
-                pEl.value = p.value;
-                pEl.name = p.name;
-
-                return pEl;
-            });
-
-            this.shadowRoot.getElementById("parameters").append(...ps);
-        }
-
-        this._init = true;
-    }
-
-    remove() {
-        //TODO - Is this need ?? How does OUTS refere to the modules they are attached to?
-        this.querySelectorAll("com-out").forEach((o) => {
-            o.emmitLifeCycle({ type: "disconnected" });
-        });
-        return super.remove();
-    }
+  remove() {
+    //TODO - Is this need ?? How does OUTS refere to the modules they are attached to?
+    this.querySelectorAll("com-out").forEach((o) => {
+      o.emmitLifeCycle({ type: "disconnected" });
+    });
+    return super.remove();
+  }
 }
 
 export class COMParameter extends Base {
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this.shadowRoot.innerHTML += `
+    this.shadowRoot.innerHTML += `
         <style>
             :host {
                 flex-direction: row;
@@ -252,153 +282,178 @@ export class COMParameter extends Base {
         <input type="test" value="0.5" />
         `;
 
-        this.shadowRoot.addEventListener("change", (e) => {
-            this.emmitLifeCycle({
-                type: "change",
-                composed: true,
-                emitter: this,
-            });
-        });
-    }
+    this.shadowRoot.addEventListener("change", (e) => {
+      this.emmitLifeCycle({
+        type: "change",
+        composed: true,
+        emitter: this,
+      });
+    });
+  }
 
-    set value(v) {
-        this.shadowRoot.querySelector("input").value = v;
-    }
+  set value(v) {
+    this.shadowRoot.querySelector("input").value = v;
+  }
 
-    get value() {
-        return this.shadowRoot.querySelector("input").value;
-    }
+  get value() {
+    return this.shadowRoot.querySelector("input").value;
+  }
 
-    set name(n) {
-        this.shadowRoot.getElementById("name").textContent = n;
-    }
+  set name(n) {
+    this.shadowRoot.getElementById("name").textContent = n;
+  }
 }
 
 let N_OUTS = 0;
 
+const randInt = (a, b) => Math.floor(Math.random() * (b - a) + a);
+const hueStep = 50;
+let huePos = randInt(0,360/50) * 50;
+// const randomColor = () => `hsl(${randInt(0, 360)} ${100}% ${50}%)`;
+const randomColor = () => `hsl(${(huePos += hueStep)} ${randInt(85,100)}% ${randInt(45,55)}%)`;
+
 export class COMOut extends Base {
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this._outIndex = -1;
+    this.style.setProperty("--color", randomColor());
 
-        this.shadowRoot.innerHTML += `
+    this._outIndex = -1;
+
+    this.shadowRoot.innerHTML += `
         <style>
             :host {
-                background-color: yellow;
+                background-color: var(--color);
 
                 position: relative;
             }
 
+            
+            /*
             x-flex {
                 position: absolute;
                 z-index: 100;
-                bottom: 75%;
-                right: 75%;
+                top: 0%;
+                left: 0%;
 
-                transform: translate(100%,100%);
                 border-radius: 2px;
                 border: 1px currentColor solid;
                 background-color: white;
 
                 padding: 4px;
+            }*/
+
+            x-flex {
+
             }
 
             :host(:not([open])) x-flex{
                 display: none;
             }
+
+            x-flex {
+                gap: 0;
+            }
         </style>
 
-        <span>out</span>
-
-        <x-flex id="">
+        <x-flex id="" row>
             <com-periphial id="cv"></com-periphial>
             <com-periphial id="gt"></com-periphial>
         </x-flex>
         `;
 
-        draggable(this);
+    draggable(this);
 
-        this.shadowRoot.addEventListener("com:bus:out", (e) => {
-            this.emmitLifeCycle({ type: "disconnect" });
+    this.shadowRoot.addEventListener("com:bus:periphial", (e) => {
+      this.emmitLifeCycle({ type: "disconnect" });
 
-            document.querySelectorAll("com-out").forEach((out) => {
-                if (out.index >= this.index) {
-                    out.index = out.index - 1;
-                }
-            });
+      document.querySelectorAll("com-out").forEach((out) => {
+        if (out.index >= this.index) {
+          out.index = out.index - 1;
+        }
+      });
 
-            this.index = N_OUTS - 1;
+      this.index = N_OUTS - 1;
 
-            this.emmitLifeCycle({ type: "connected" });
-        });
-    }
+      this.emmitLifeCycle({ type: "connected" });
+    });
+  }
 
-    get index() {
-        return this._outIndex;
-    }
+  get index() {
+    return this._outIndex;
+  }
 
-    set index(v) {
-        this._outIndex = v;
-    }
+  set index(v) {
+    this._outIndex = v;
+  }
 
-    get cv() {
-        return this.shadowRoot.getElementById("cv");
-    }
+  get cv() {
+    return this.shadowRoot.getElementById("cv");
+  }
 
-    get gt() {
-        return this.shadowRoot.getElementById("gt");
-    }
+  get gt() {
+    return this.shadowRoot.getElementById("gt");
+  }
 
-    connectedCallback() {
-        this.index = N_OUTS;
+  connectedCallback() {
+    this.index = N_OUTS;
 
-        N_OUTS++;
+    N_OUTS++;
 
-        this._init = true;
+    this._init = true;
 
-        document.querySelectorAll("com-out").forEach((out) => {
-            if (out.index > this.index) {
-                out.index = out.index + 1;
-            }
-        });
+    document.querySelectorAll("com-out").forEach((out) => {
+      if (out.index > this.index) {
+        out.index = out.index + 1;
+      }
+    });
 
-        super.connectedCallback();
-        //TODO - This is needed if the outs doesnt need to be reattached everytime a module is moved
-        // this._openConnection = false;
-    }
+    super.connectedCallback();
+    //TODO - This is needed if the outs doesnt need to be reattached everytime a module is moved
+    // this._openConnection = false;
+  }
 
-    disconnectedCallback() {
-        N_OUTS--;
-        document.querySelectorAll("com-out").forEach((out) => {
-            if (out.index >= this.index) {
-                out.index = out.index - 1;
-            }
-        });
-    }
+  disconnectedCallback() {
+    N_OUTS--;
+    document.querySelectorAll("com-out").forEach((out) => {
+      if (out.index >= this.index) {
+        out.index = out.index - 1;
+      }
+    });
+  }
 }
 
 export class COMPeriphial extends Base {
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this.shadowRoot.addEventListener("change", (e) => {
-            this.dispatchEvent(
-                new CustomEvent("com:bus:out", {
-                    bubbles: true,
-                    detail: {
-                        type: "change",
-                        emitter: this,
-                    },
-                })
-            );
-        });
+    this.shadowRoot.addEventListener("change", (e) => {
+      this.dispatchEvent(
+        new CustomEvent("com:bus:periphial", {
+          bubbles: true,
+          detail: {
+            type: "change",
+            emitter: this,
+          },
+        })
+      );
+    });
 
-        this.shadowRoot.innerHTML = `
+    this.shadowRoot.innerHTML = `
     <style>
 
         :host{
 
+        }
+
+        x-flex {
+            gap: 0;
+        }
+
+        select {
+            border: none;
+            font-family: inherit;
+            color: inherit;
         }
 
     </style>
@@ -420,24 +475,24 @@ export class COMPeriphial extends Base {
         <select>
     </x-flex>
     `;
-    }
+  }
 
-    get pid() {
-        return this.shadowRoot.getElementById("pid");
-    }
+  get pid() {
+    return this.shadowRoot.getElementById("pid");
+  }
 
-    get ch() {
-        return this.shadowRoot.getElementById("ch");
-    }
+  get ch() {
+    return this.shadowRoot.getElementById("ch");
+  }
 }
 
 export class XFlex extends HTMLElement {
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this.attachShadow({ mode: "open" });
+    this.attachShadow({ mode: "open" });
 
-        this.shadowRoot.innerHTML += `
+    this.shadowRoot.innerHTML += `
     <style>
         :host{
             display: flex;
@@ -452,7 +507,7 @@ export class XFlex extends HTMLElement {
     </style>
     <slot></slot>
     `;
-    }
+  }
 }
 
 customElements.define("x-flex", XFlex);
