@@ -15,10 +15,10 @@ class Base extends HTMLElement {
 
         :host {
             display: flex;
-            gap: 4px;
+            gap: 8px;
             flex-direction: column;
 
-            padding: 2px;
+            padding: 4px;
             border-radius: 2px;
 
             border: 1px currentColor solid;
@@ -152,6 +152,8 @@ export class COMChain extends Base {
         #modules {
             padding: 4px;
             gap: 4px;
+            border: 1px currentColor dashed;
+            border-radius: 2px;
         }
     </style>
     
@@ -178,6 +180,13 @@ export class COMChain extends Base {
 
     get gt() {
         return this.shadowRoot.getElementById("gt");
+    }
+
+    addModule(type = "pth") {
+        /**@type {COMModule} */
+        const newModule = document.createElement("com-module");
+        newModule.setAttribute("type", type);
+        this.appendChild(newModule);
     }
 }
 
@@ -209,6 +218,7 @@ export class COMModule extends Base {
             padding: 4px;
             border: 1px currentColor solid;
             border-radius: 2px;
+            border-style: dashed;
         }
 
 
@@ -222,15 +232,14 @@ export class COMModule extends Base {
         <slot></slot>
     </x-flex>
     `;
-
-        draggable(this);
-        dragZone(this, COMOut, true);
     }
 
     connectedCallback() {
         super.connectedCallback();
 
         if (!this._init) {
+            draggable(this);
+            dragZone(this, COMOut, true);
             /**@type {ModuleTypes} */
             const type = this.getAttribute("type") ?? "PTH";
             if (type == "PTH") return;
@@ -247,6 +256,7 @@ export class COMModule extends Base {
             });
 
             this.shadowRoot.getElementById("parameters").append(...ps);
+            this.shadowRoot.getElementById("type").textContent = type;
         }
 
         this._init = true;
@@ -273,6 +283,7 @@ export class COMParameter extends Base {
 
                 font-size: 0.75rem;
                 gap: 4px;
+                border-style: dashed;
             }
 
             #name {
