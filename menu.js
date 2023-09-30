@@ -33,6 +33,7 @@ function chainMenu(e) {
 
     menu.onclick = (ev) => {
         e.target.addModule("LFO");
+        menu.remove();
     };
 
     menu.innerHTML = `
