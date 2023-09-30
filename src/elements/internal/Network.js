@@ -43,7 +43,7 @@ export default class COMNetwork extends Base {
                 }
             }
 
-            console.log(s);
+            // console.log(s);
         });
 
         this.shadowRoot.innerHTML += `

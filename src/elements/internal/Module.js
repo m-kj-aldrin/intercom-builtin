@@ -27,12 +27,12 @@ export default class COMModule extends Base {
         }
 
         #outs {
-            padding: 4px;
-            border: 1px currentColor solid;
-            border-radius: 2px;
-            border-style: dashed;
+            padding: 2px;
         }
 
+        #outs[empty] {
+            display: none;
+        }
 
     </style>
 
@@ -40,10 +40,21 @@ export default class COMModule extends Base {
 
     <x-flex id="parameters"></x-flex>
 
-    <x-flex id="outs" >
+    <x-flex id="outs" empty>
         <slot></slot>
     </x-flex>
     `;
+
+        // Waiting for a selector to solve this https://github.com/w3c/csswg-drafts/issues/6867
+        this.shadowRoot.addEventListener("slotchange", (e) => {
+            if (!this.children.length) {
+                this.shadowRoot
+                    .getElementById("outs")
+                    .toggleAttribute("empty", true);
+            } else {
+                this.shadowRoot.getElementById("outs").removeAttribute("empty");
+            }
+        });
     }
 
     connectedCallback() {

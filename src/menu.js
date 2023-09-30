@@ -3,18 +3,6 @@ import COMChain from "./elements/internal/Chain.js";
 /**@param {import("./drag.js").HTMLEvent<MouseEvent>} e */
 function contextHandler(e) {
     e.preventDefault();
-    // document.body
-    //   .querySelectorAll("[open]")
-    //   .forEach((el) => el.removeAttribute("open"));
-
-    // e.target.toggleAttribute("open");
-
-    // window.onclick = (ev) => {
-    //   if (e.target != ev.target) {
-    //     e.target.removeAttribute("open");
-    //     window.onclick = null;
-    //   }
-    // };
 
     if (e.target instanceof COMChain) {
         chainMenu(e);
