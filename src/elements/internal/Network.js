@@ -1,3 +1,4 @@
+import COMChain from "./Chain.js";
 import COMModule from "./Module.js";
 import COMParameter from "./Parameter.js";
 import Base from "./_Base.js";
@@ -15,9 +16,43 @@ export default class COMNetwork extends Base {
 
             let s = `${comname} ${type}\n`;
 
+            // - - CHAIN - -
+
             if (chain) {
                 s += `chain idx: ${chain.index}\n`;
             }
+
+            if (emitter instanceof COMChain && type == "change") {
+                const cv = emitter.cv;
+                const gt = emitter.gt;
+
+                s += `cv - pid: ${cv.pid.value} ch: ${cv.ch.value}\ngt - pid: ${gt.pid.value} ch: ${gt.ch.value}\n`;
+
+                let modulesString = "";
+                const modules = emitter.modules;
+
+                for (const module of modules) {
+                    modulesString += module.type;
+
+                    let parametersString = "[";
+
+                    const parameters = module.parameters;
+
+                    for (const parameter of parameters) {
+                        parametersString += `${parameter.value}:`;
+                    }
+
+                    parametersString = parametersString.slice(0, -1) + "]";
+
+                    modulesString += `${parametersString},`;
+                }
+
+                modulesString = modulesString.slice(0, -1);
+
+                s += modulesString;
+            }
+
+            // - - MODULE - -
 
             if (module) {
                 s += `module idx: ${module.index}\n`;
@@ -38,6 +73,8 @@ export default class COMNetwork extends Base {
                 s += parametersString;
             }
 
+            // - - PARAMETER - -
+
             if (emitter instanceof COMParameter && type == "change") {
                 if (emitter) {
                     s += `parameter idx: ${emitter.index}`;
@@ -47,6 +84,8 @@ export default class COMNetwork extends Base {
                     s += "\n";
                 }
             }
+
+            // - - OUT - -
 
             if (out) {
                 s += `out idx: ${out.index}\n`;

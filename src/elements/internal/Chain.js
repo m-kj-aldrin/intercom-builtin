@@ -38,12 +38,18 @@ export default class COMChain extends Base {
         });
     }
 
+    /**@type {import("./Periphial.js").default} */
     get cv() {
         return this.shadowRoot.getElementById("cv");
     }
 
+    /**@type {import("./Periphial.js").default} */
     get gt() {
         return this.shadowRoot.getElementById("gt");
+    }
+
+    get modules() {
+        return this.querySelectorAll("com-module");
     }
 
     addModule(type = "pth") {
