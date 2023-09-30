@@ -55,38 +55,56 @@ export default class COMModule extends Base {
                 this.shadowRoot.getElementById("outs").removeAttribute("empty");
             }
         });
+
+        /**@type {ModuleTypes} */
+        this._type = "PTH";
     }
 
     connectedCallback() {
-        super.connectedCallback();
-
         if (!this._init) {
             draggable(this);
             dragZone(this, COMOut, true);
 
             /**@type {ModuleTypes} */
             const type = this.getAttribute("type") ?? "PTH";
-            if (type == "PTH") return;
-            const parameters = MODULE_TYPES[type];
+            if (type == "PTH" || this._type != "PTH") return;
 
-            const ps = parameters.map((p, i) => {
-                const pEl = document.createElement("com-parameter");
-
-                pEl.value = p.value.toString();
-                pEl.name = p.name;
-
-                return pEl;
-            });
-
-            this.shadowRoot.getElementById("parameters").append(...ps);
-            this.shadowRoot.getElementById("type").textContent = type;
+            this.type = type;
         }
 
         this._init = true;
+
+        super.connectedCallback();
+    }
+
+    /**@param {ModuleTypes} type */
+    set type(type) {
+        this._type = type;
+        const parameters = MODULE_TYPES[type];
+
+        const ps = parameters.map((p, i) => {
+            const pEl = document.createElement("com-parameter");
+
+            pEl.value = p.value.toString();
+            pEl.name = p.name;
+
+            return pEl;
+        });
+
+        this.shadowRoot.getElementById("parameters").append(...ps);
+        this.shadowRoot.getElementById("type").textContent = type;
+    }
+
+    get type() {
+        return this._type;
+    }
+
+    get parameters() {
+        return this.shadowRoot.querySelectorAll("com-parameter");
     }
 
     remove() {
-        //TODO - Is this need ?? How does OUTS refere to the modules they are attached to?
+        //TODO - Is this need ?? How does OUTS refer to the modules they are attached to?
         this.querySelectorAll("com-out").forEach((o) => {
             o.emmitLifeCycle({ type: "disconnected" });
         });

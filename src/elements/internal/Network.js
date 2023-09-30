@@ -1,3 +1,4 @@
+import COMModule from "./Module.js";
 import COMParameter from "./Parameter.js";
 import Base from "./_Base.js";
 
@@ -22,6 +23,21 @@ export default class COMNetwork extends Base {
                 s += `module idx: ${module.index}\n`;
             }
 
+            if (emitter instanceof COMModule && type == "connected") {
+                s += `module type: ${emitter.type}`;
+
+                const parameters = emitter.parameters;
+
+                let parametersString = "[";
+                for (const parameter of parameters) {
+                    parametersString += `${parameter.value}:`;
+                }
+
+                parametersString = parametersString.slice(0, -1) + "]";
+
+                s += parametersString;
+            }
+
             if (emitter instanceof COMParameter && type == "change") {
                 if (emitter) {
                     s += `parameter idx: ${emitter.index}`;
@@ -43,7 +59,7 @@ export default class COMNetwork extends Base {
                 }
             }
 
-            // console.log(s);
+            console.log(s);
         });
 
         this.shadowRoot.innerHTML += `
