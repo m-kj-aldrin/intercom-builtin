@@ -5,10 +5,14 @@ import Base from "./_Base.js";
 const MODULE_TYPES = {
     PTH: [],
     LFO: [
-        { name: "AMP", value: 0.5 },
-        { name: "FREQ", value: 0.125 },
+        { name: "AMP", value: 0.5, type: "range" },
+        { name: "FREQ", value: 0.125, type: "range" },
     ],
-    PROB: [{ name: "CHNS", value: 0.5 }],
+    PRO: [{ name: "CHNS", value: 0.5, type: "range" }],
+    BCH: [
+        { name: "CV", value: 0, type: "picker" },
+        { name: "GT", value: 0, type: "picker" },
+    ],
 };
 
 /**@typedef {keyof typeof MODULE_TYPES} ModuleTypes */
@@ -67,7 +71,7 @@ export default class COMModule extends Base {
 
             /**@type {ModuleTypes} */
             const type = this.getAttribute("type") ?? "PTH";
-            if (type == "PTH" || this._type != "PTH") return;
+            // if (type == "PTH" || this._type != "PTH") return;
 
             this.type = type;
         }
@@ -80,6 +84,8 @@ export default class COMModule extends Base {
     /**@param {ModuleTypes} type */
     set type(type) {
         this._type = type;
+        if (type == "PTH") return;
+
         const parameters = MODULE_TYPES[type];
 
         const ps = parameters.map((p, i) => {
@@ -87,6 +93,7 @@ export default class COMModule extends Base {
 
             pEl.value = p.value.toString();
             pEl.name = p.name;
+            pEl.type = p.type;
 
             return pEl;
         });

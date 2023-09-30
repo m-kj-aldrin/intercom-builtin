@@ -1,4 +1,40 @@
+import COMModule from "./Module.js";
 import Base from "./_Base.js";
+
+let picking = false;
+/**@type {COMModule} */
+let currentPicker;
+/**@type {COMParameter} */
+let currentParamPicker;
+
+/**
+ * @param {PointerEvent & {target:COMModule}} ev
+ */
+function selectHandler(ev) {
+    if (currentPicker == ev.target) return;
+    if (!(ev.target instanceof COMModule)) return;
+
+    const module = ev.target;
+    const chain = ev.target.closest("com-chain");
+
+    currentParamPicker.value = `[${chain.index}:${module.index}]`;
+
+    picking = false;
+    window.removeEventListener("pointerdown", selectHandler);
+}
+
+/**
+ *
+ * @param {PointerEvent & {target:COMParameter}} e
+ */
+function pickerHandler(e) {
+    if (picking) return;
+    picking = true;
+
+    currentPicker = e.target.getRootNode().host;
+    currentParamPicker = e.target;
+    window.addEventListener("pointerdown", selectHandler);
+}
 
 export default class COMParameter extends Base {
     constructor() {
@@ -13,6 +49,10 @@ export default class COMParameter extends Base {
                 font-size: 0.75rem;
                 gap: 4px;
                 border-style: dashed;
+            }
+
+            :host([type="picker"]) #output{
+                display: none;
             }
 
             #name {
@@ -84,14 +124,9 @@ export default class COMParameter extends Base {
         </style>
 
         <span id="name"></span>
-        <input type="range" value="0.5000" min=0 max=1 step="0.0001" oninput="this.nextElementSibling.value = (+event.target.value).toFixed(4)"  />
-        <input type="text" value="0.5000" min=0 max=1 id="output" oninput="this.previousElementSibling.value = (+event.target.value).toFixed(4)"/>
+        <input id="parameter" type="range" value="0.5000" min=0 max=1 step="0.0001" oninput="this.nextElementSibling.value = (+event.target.value).toFixed(4)"  />
+        <input id="output" type="text" value="0.5000" min=0 max=1  oninput="this.previousElementSibling.value = (+event.target.value).toFixed(4)"/>
         `;
-
-        this.ondragstart = (e) => {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-        };
 
         this.shadowRoot.addEventListener("change", (e) => {
             e.preventDefault();
@@ -104,12 +139,46 @@ export default class COMParameter extends Base {
     }
 
     connectedCallback() {
-        // super.connectedCallback();
         this.draggable = true;
+        this.ondragstart = (e) => {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        };
+
+        // setTimeout(() => {
+        //     // this.value = "123";
+        //     this.parameter.dispatchEvent(
+        //         new Event("change", { bubbles: true })
+        //     );
+        // }, 1000);
+    }
+
+    /**
+     * @param {string} value
+     */
+    set type(value) {
+        if (value == "picker") {
+            this.parameter.type = "button";
+            this.setAttribute("type", "picker");
+            // [0:0] : [1:3]
+            this.onpointerdown = pickerHandler;
+            return;
+        }
+
+        this.onpointerdown = null;
+
+        this.parameter.type = value;
+    }
+
+    /**@type {HTMLInputElement} */
+    get parameter() {
+        return this.shadowRoot.getElementById("parameter");
     }
 
     set value(v) {
         this.shadowRoot.querySelector("input").value = v;
+
+        this.parameter.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
     get value() {

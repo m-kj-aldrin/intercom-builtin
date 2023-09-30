@@ -34,7 +34,7 @@ export default class COMNetwork extends Base {
                 for (const module of modules) {
                     modulesString += module.type;
 
-                    let parametersString = "[";
+                    let parametersString = "";
 
                     const parameters = module.parameters;
 
@@ -42,7 +42,7 @@ export default class COMNetwork extends Base {
                         parametersString += `${parameter.value}:`;
                     }
 
-                    parametersString = parametersString.slice(0, -1) + "]";
+                    parametersString = parametersString.slice(0, -1) + "";
 
                     modulesString += `${parametersString},`;
                 }
@@ -59,18 +59,20 @@ export default class COMNetwork extends Base {
             }
 
             if (emitter instanceof COMModule && type == "connected") {
-                s += `module type: ${emitter.type}`;
+                s += `module type: ${emitter.type.toLocaleLowerCase()} `;
 
-                const parameters = emitter.parameters;
+                if (emitter.type != "PTH") {
+                    const parameters = emitter.parameters;
 
-                let parametersString = "[";
-                for (const parameter of parameters) {
-                    parametersString += `${parameter.value}:`;
+                    let parametersString = "";
+                    for (const parameter of parameters) {
+                        parametersString += `${parameter.value} : `;
+                    }
+
+                    parametersString = parametersString.slice(0, -2) + "";
+
+                    s += parametersString;
                 }
-
-                parametersString = parametersString.slice(0, -1) + "]";
-
-                s += parametersString;
             }
 
             // - - PARAMETER - -
