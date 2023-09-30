@@ -1,6 +1,6 @@
-import { COMChain } from "./app.js";
+import COMChain from "./elements/internal/Chain.js";
 
-/**@param {import("./drag").HTMLEvent<MouseEvent>} e */
+/**@param {import("./drag.js").HTMLEvent<MouseEvent>} e */
 function contextHandler(e) {
     e.preventDefault();
     // document.body
