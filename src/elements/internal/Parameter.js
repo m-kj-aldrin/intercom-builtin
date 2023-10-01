@@ -153,7 +153,7 @@ export default class COMParameter extends Base {
         </style>
 
         <label id="name" for="parameter"></label>
-        <input id="parameter" type="range" value="" min=0 max=1 step="0.0001" oninput="this.nextElementSibling.value = (+event.target.value).toFixed(4)"  />
+        <input id="parameter" type="range" value="" min=0 max=1 step="0.0001" oninput="this.nextElementSibling.value = (+event.target.value)?.toFixed(4)"  />
         <input id="output" type="text" value="" min=0 max=1  oninput="this.previousElementSibling.value = (+event.target.value).toFixed(4)"/>
         `;
 

@@ -109,4 +109,9 @@ export default class COMNetwork extends Base {
         </x-flex>
         `;
     }
+
+    addChain() {
+        const newChain = document.createElement("com-chain");
+        this.appendChild(newChain);
+    }
 }

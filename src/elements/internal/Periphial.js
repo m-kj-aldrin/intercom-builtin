@@ -2,20 +2,64 @@ import Base from "./_Base.js";
 
 const PERIPHIAL_MAP = [
     {
-        name: "midi_1",
+        name: "dac",
         color: "red",
+        nChannels: 8,
     },
     {
-        name: "midi_2",
+        name: "adc",
         color: "red",
+        nChannels: 8,
     },
     {
-        name: "usb_midi",
+        name: "dout",
+        color: "red",
+        nChannels: 8,
+    },
+    {
+        name: "din",
+        color: "red",
+        nChannels: 8,
+    },
+    {
+        name: "midi_s_1",
         color: "orange",
+        nChannels: 16,
+    },
+    {
+        name: "midi_s_1",
+        color: "orange",
+        nChannels: 16,
+    },
+    {
+        name: "midi_s_1",
+        color: "orange",
+        nChannels: 16,
+    },
+    {
+        name: "midi_device",
+        color: "orange",
+        nChannels: 16,
+    },
+    {
+        name: "midi_host",
+        color: "orange",
+        nChannels: 16,
+    },
+    {
+        name: "i2c_1",
+        color: "orange",
+        nChannels: 4,
+    },
+    {
+        name: "i2c_2",
+        color: "orange",
+        nChannels: 4,
     },
     {
         name: "osc",
         color: "blue",
+        nChannels: null,
     },
 ];
 
@@ -26,10 +70,18 @@ export default class COMPeriphial extends Base {
         this.style.setProperty("--color", PERIPHIAL_MAP[0].color);
 
         this.shadowRoot.addEventListener("change", (e) => {
-            this.style.setProperty(
-                "--color",
-                PERIPHIAL_MAP[+this.pid.value].color
-            );
+            if (e.target == this.pid && +this.pid.value) {
+                const periphialOpt = PERIPHIAL_MAP[+this.pid.value];
+                this.style.setProperty("--color", periphialOpt.color);
+
+                const nCh = PERIPHIAL_MAP[+this.pid.value].nChannels;
+
+                let chHTML = "<option selected>_</option>";
+                for (let i = 0; i < nCh; i++) {
+                    chHTML += `<option value="${i}">${i}</option>`;
+                }
+                this.ch.innerHTML = chHTML;
+            }
 
             this.dispatchEvent(
                 new CustomEvent("com:bus:periphial", {
@@ -75,17 +127,14 @@ export default class COMPeriphial extends Base {
 
     <x-flex row>
         <span><slot></slot></span>
-        <select id="pid">
+        <select id="pid" >
+            <option selected>_</option>
             ${PERIPHIAL_MAP.map((t, i) => {
                 return `<option value="${i}">${t.name}</option>`;
             }).join("\n")}
         <select>
-        <select id="ch">
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+        <select id="ch" value="3">
+            <option selected>_</option>
         <select>
     </x-flex>
     `;

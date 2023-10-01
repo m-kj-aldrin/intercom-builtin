@@ -1,5 +1,6 @@
 import COMChain from "./elements/internal/Chain.js";
 import COMModule, { MODULE_TYPES } from "./elements/internal/Module.js";
+import COMNetwork from "./elements/internal/Network.js";
 import COMOut from "./elements/internal/Out.js";
 
 /**@param {import("./drag.js").HTMLEvent<MouseEvent>} e */
@@ -7,6 +8,10 @@ function contextHandler(e) {
     e.preventDefault();
 
     document.querySelector("menu")?.remove();
+
+    if (e.target instanceof COMNetwork) {
+        networkMenu(e);
+    }
 
     if (e.target instanceof COMChain) {
         chainMenu(e);
@@ -19,6 +24,43 @@ function contextHandler(e) {
     if (e.target instanceof COMOut) {
         outMenu(e);
     }
+}
+
+const networkTemplate = `
+    <input type="button" value="add chain" />
+`;
+
+/**@param {MouseEvent & {target:COMNetwork}} e */
+function networkMenu(e) {
+    const x = e.clientX;
+    const y = e.clientY;
+    const menu = document.createElement("menu");
+    menu.setAttribute("type", "chain");
+
+    menu.style.left = `${x}px`;
+    menu.style.top = `${y}px`;
+
+    menu.onclick = (ev) => {
+        const value = ev.target.value;
+        if (!value) return;
+        switch (value) {
+            case "add chain":
+                e.target.addChain();
+                break;
+        }
+        menu.remove();
+    };
+
+    menu.innerHTML = networkTemplate;
+
+    document.body.appendChild(menu);
+
+    window.onpointerdown = (ee) => {
+        if (ee.target.closest("menu") != menu) {
+            menu.remove();
+            window.onpointerdown = null;
+        }
+    };
 }
 
 const moduleTypeNames = Object.keys(MODULE_TYPES);
