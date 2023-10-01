@@ -48,6 +48,8 @@ function pickerHandler(e) {
     window.addEventListener("pointerdown", selectHandler);
 }
 
+// TODO - Parameter element needs to be extend to handle diverse types of parameter
+// select / boolean / switch / range / picker / float / integer
 export default class COMParameter extends Base {
     constructor() {
         super();
@@ -69,7 +71,7 @@ export default class COMParameter extends Base {
                 background-color: hsl(40 100% 50% / 0.1);
             }
 
-            :host([type="picker"]) #output{
+            :host(:not([type="range"])) #output{
                 display: none;
             }
 
@@ -186,13 +188,26 @@ export default class COMParameter extends Base {
     /**
      * @param {string} value
      */
-    set type(value) {
+    type(value, list) {
+        this.setAttribute("type", value);
         if (value == "picker") {
             this.parameter.type = "button";
-            this.setAttribute("type", "picker");
             // [0:0] : [1:3]
             this.onpointerdown = pickerHandler;
             return;
+        }
+
+        if (value == "select") {
+            this.parameter.type = "select";
+            console.log(list);
+            const s = document.createElement("select");
+            list.forEach((o) => {
+                const opt = document.createElement("option");
+                opt.value = o;
+                opt.text = o;
+                s.appendChild(opt);
+            });
+            this.shadowRoot.appendChild(s);
         }
 
         this.onpointerdown = null;

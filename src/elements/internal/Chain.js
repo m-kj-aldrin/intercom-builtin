@@ -8,16 +8,23 @@ export default class COMChain extends Base {
 
         this.shadowRoot.innerHTML += `
     <style>
+        :host {
+            background-color: white;
+            border-color: #0005;
+        }
+
         #input {
             flex-grow: 0;
             justify-content: space-between;
         }
 
         #modules {
-            padding: 4px;
-            gap: 4px;
-            border: 1px currentColor dashed;
+            padding: 8px;
+            gap: 8px;
             border-radius: 2px;
+
+            border: 1px #0002 dashed;
+            background-color: #f9f9f9;
         }
     </style>
     

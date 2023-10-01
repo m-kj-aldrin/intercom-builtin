@@ -5,8 +5,28 @@ import Base from "./_Base.js";
 export const MODULE_TYPES = {
     PTH: [],
     LFO: [
-        { name: "AMP", value: 0.5, type: "range", min: null, max: null },
-        { name: "FREQ", value: 20, type: "range", min: 1, max: 60 },
+        { name: "frequency", value: 20, type: "range", min: 1, max: 60 },
+        { name: "span", value: 0.5, type: "range", min: null, max: null },
+        { name: "phase", value: 0.5, type: "range", min: null, max: null },
+        { name: "offset", value: 0.5, type: "range", min: null, max: null },
+        {
+            name: "wave select",
+            value: "sine",
+            type: "select",
+            list: ["ramp up", "ramp down", "triangle", "sine", "square"],
+            min: null,
+            max: null,
+        },
+        { name: "reset", value: 0, type: "boolean", min: null, max: null },
+        {
+            name: "mode",
+            value: 0,
+            type: "select",
+            list: ["freerunning", "beat-sync"],
+            min: null,
+            max: null,
+        },
+        { name: "hold", value: 0, type: "boolean", min: null, max: null },
     ],
     PRO: [{ name: "CHNS", value: 0.5, type: "range", min: null, max: null }],
     BCH: [
@@ -24,6 +44,9 @@ export default class COMModule extends Base {
         this.shadowRoot.innerHTML += `
     <style>
         :host {
+            background-color: white;
+            box-shadow: 0 0 4px #0002;
+            border-color: #0002;
         }
 
         #parameters:not(:has(*)){
@@ -103,7 +126,7 @@ export default class COMModule extends Base {
             pEl.minmax = { min: p.min, max: p.max };
             pEl.value = p.value.toString();
             pEl.name = p.name;
-            pEl.type = p.type;
+            pEl.type(p.type, p.list);
             pEl.setAttribute("part", "parameter");
 
             return pEl;

@@ -81,15 +81,6 @@ export default class COMPeriphial extends Base {
                 this.ch.innerHTML = chHTML;
             }
 
-            // this.dispatchEvent(
-            //     new CustomEvent("com:bus:periphial", {
-            //         bubbles: true,
-            //         detail: {
-            //             type: "change",
-            //             emitter: this,
-            //         },
-            //     })
-            // );
             if (e.target == this.ch) {
                 this.dispatchEvent(
                     new CustomEvent("change", {

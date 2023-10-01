@@ -11,8 +11,15 @@ export default class COMGlobal extends HTMLElement {
         <style>
             :host {
                 border: 1px currentColor solid;
+                border-radius: 2px;
                 flex-basis: 0;
                 flex-grow: 0;
+                padding: 4px;
+            }
+
+            input {
+                font-family: inherit;
+                font-color: inherit;
             }
 
             x-flex{
