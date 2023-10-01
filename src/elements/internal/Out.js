@@ -40,8 +40,6 @@ export default class COMOut extends Base {
         </x-flex>
         `;
 
-        draggable(this);
-
         this.shadowRoot.addEventListener("com:bus:periphial", (e) => {
             this.emmitLifeCycle({ type: "disconnect" });
 
@@ -76,6 +74,10 @@ export default class COMOut extends Base {
     }
 
     connectedCallback() {
+        if (!this._init) {
+            draggable(this);
+        }
+
         this.index = N_OUTS;
 
         N_OUTS++;

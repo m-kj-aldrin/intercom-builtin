@@ -2,7 +2,7 @@ import { dragZone, draggable } from "../../drag.js";
 import COMOut from "./Out.js";
 import Base from "./_Base.js";
 
-const MODULE_TYPES = {
+export const MODULE_TYPES = {
     PTH: [],
     LFO: [
         { name: "AMP", value: 0.5, type: "range", min: null, max: null },
@@ -119,6 +119,11 @@ export default class COMModule extends Base {
 
     get parameters() {
         return this.shadowRoot.querySelectorAll("com-parameter");
+    }
+
+    addOut() {
+        const newOut = document.createElement("com-out");
+        this.appendChild(newOut);
     }
 
     remove() {
