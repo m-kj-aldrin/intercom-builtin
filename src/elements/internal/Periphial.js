@@ -13,12 +13,12 @@ const PERIPHIAL_MAP = [
     },
     {
         name: "dout",
-        color: "red",
+        color: "green",
         nChannels: 8,
     },
     {
         name: "din",
-        color: "red",
+        color: "green",
         nChannels: 8,
     },
     {
@@ -48,12 +48,12 @@ const PERIPHIAL_MAP = [
     },
     {
         name: "i2c_1",
-        color: "orange",
+        color: "hotpink",
         nChannels: 4,
     },
     {
         name: "i2c_2",
-        color: "orange",
+        color: "hotpink",
         nChannels: 4,
     },
     {
@@ -70,7 +70,7 @@ export default class COMPeriphial extends Base {
         this.style.setProperty("--color", PERIPHIAL_MAP[0].color);
 
         this.shadowRoot.addEventListener("change", (e) => {
-            if (e.target == this.pid && +this.pid.value) {
+            if (e.target == this.pid && typeof +this.pid.value == "number") {
                 const periphialOpt = PERIPHIAL_MAP[+this.pid.value];
                 this.style.setProperty("--color", periphialOpt.color);
 
@@ -121,6 +121,7 @@ export default class COMPeriphial extends Base {
             font-family: inherit;
             color: inherit;
             color: #fff;
+            border: none;
         }
 
     </style>

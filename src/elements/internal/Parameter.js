@@ -37,6 +37,14 @@ function pickerHandler(e) {
 
     currentPicker = e.target.getRootNode().host;
     currentParamPicker = e.target;
+    window.onkeydown = (ee) => {
+        if (ee.key == "Escape") {
+            currentParamPicker.removeAttribute("data-picking");
+            document.documentElement.removeAttribute("data-picking");
+            picking = false;
+            window.removeEventListener("pointerdown", selectHandler);
+        }
+    };
     window.addEventListener("pointerdown", selectHandler);
 }
 

@@ -104,6 +104,7 @@ export default class COMModule extends Base {
             pEl.value = p.value.toString();
             pEl.name = p.name;
             pEl.type = p.type;
+            pEl.setAttribute("part", "parameter");
 
             return pEl;
         });
