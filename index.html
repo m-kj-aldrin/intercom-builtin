@@ -35,6 +35,21 @@
             menu[type="chain"] {
                 position: absolute;
             }
+
+            [draggable="true"] {
+                cursor: grab;
+            }
+
+            html:not([data-dragging])
+                [draggable="true"]:hover:not(:has([draggable="true"]:hover)) {
+                /* background-color: yellow; */
+                border-color: blue;
+            }
+
+            [data-dragged] {
+                /* background-color: yellow; */
+                border-color: blue;
+            }
         </style>
 
         <script src="src/app.js" type="module"></script>
@@ -46,6 +61,5 @@
             }
         </style>
     </head>
-    <body>
-    </body>
+    <body></body>
 </html>

@@ -17,6 +17,9 @@ export default class COMOut extends Base {
                 position: relative;
                 flex-direction: row;
                 align-items: center;
+
+                border-color: #0002;
+                background-color: #fdfdfd;
             }
 
             x-flex {

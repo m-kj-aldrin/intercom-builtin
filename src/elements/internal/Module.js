@@ -5,13 +5,13 @@ import Base from "./_Base.js";
 const MODULE_TYPES = {
     PTH: [],
     LFO: [
-        { name: "AMP", value: 0.5, type: "range" },
-        { name: "FREQ", value: 0.125, type: "range" },
+        { name: "AMP", value: 0.5, type: "range", min: null, max: null },
+        { name: "FREQ", value: 20, type: "range", min: 1, max: 60 },
     ],
-    PRO: [{ name: "CHNS", value: 0.5, type: "range" }],
+    PRO: [{ name: "CHNS", value: 0.5, type: "range", min: null, max: null }],
     BCH: [
-        { name: "CV", value: 0, type: "picker" },
-        { name: "GT", value: 0, type: "picker" },
+        { name: "CV", value: 0, type: "picker", min: null, max: null },
+        { name: "GT", value: 0, type: "picker", min: null, max: null },
     ],
 };
 
@@ -28,6 +28,14 @@ export default class COMModule extends Base {
 
         #parameters:not(:has(*)){
             display:none;
+        }
+
+        :host([type="BCH"]) #parameters {
+            flex-direction: row;
+        }
+
+        :host([type="BCH"]) #parameters com-parameter {
+            flex-basis: 50%;
         }
 
         #outs {
@@ -84,6 +92,7 @@ export default class COMModule extends Base {
     /**@param {ModuleTypes} type */
     set type(type) {
         this._type = type;
+        this.setAttribute("type", type);
         if (type == "PTH") return;
 
         const parameters = MODULE_TYPES[type];
@@ -91,6 +100,7 @@ export default class COMModule extends Base {
         const ps = parameters.map((p, i) => {
             const pEl = document.createElement("com-parameter");
 
+            pEl.minmax = { min: p.min, max: p.max };
             pEl.value = p.value.toString();
             pEl.name = p.name;
             pEl.type = p.type;
@@ -98,6 +108,7 @@ export default class COMModule extends Base {
             return pEl;
         });
 
+        this.shadowRoot.getElementById("parameters").innerHTML = "";
         this.shadowRoot.getElementById("parameters").append(...ps);
         this.shadowRoot.getElementById("type").textContent = type;
     }

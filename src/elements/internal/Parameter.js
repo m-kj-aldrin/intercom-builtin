@@ -49,26 +49,47 @@ export default class COMParameter extends Base {
                 font-size: 0.75rem;
                 gap: 4px;
                 border-style: dashed;
+
+
             }
 
             :host([type="picker"]) #output{
                 display: none;
             }
 
+            label {
+                cursor: pointer;
+            }
+
             #name {
                 text-transform: lowercase;
             }
 
+            input:active{
+                color: blue;
+            }
+
             input {
+                padding: 0.25ch 0.5ch;
                 font-size: inherit;
                 color: inherit;
                 font-family: inherit;
                 border: none;
+
+                display: inline-block;
+                line-height: 1;
             }
 
             input[type="text"] {
                 width: 7ch;
                 text-align: center;
+            }
+
+            input[type="button"]{
+                cursor: pointer;
+                flex-grow: 1;
+                background-color: transparent;
+                border-radius: 2px;
             }
 
             input[type="range"] {
@@ -123,9 +144,9 @@ export default class COMParameter extends Base {
             }
         </style>
 
-        <span id="name"></span>
-        <input id="parameter" type="range" value="0.5000" min=0 max=1 step="0.0001" oninput="this.nextElementSibling.value = (+event.target.value).toFixed(4)"  />
-        <input id="output" type="text" value="0.5000" min=0 max=1  oninput="this.previousElementSibling.value = (+event.target.value).toFixed(4)"/>
+        <label id="name" for="parameter"></label>
+        <input id="parameter" type="range" value="" min=0 max=1 step="0.0001" oninput="this.nextElementSibling.value = (+event.target.value).toFixed(4)"  />
+        <input id="output" type="text" value="" min=0 max=1  oninput="this.previousElementSibling.value = (+event.target.value).toFixed(4)"/>
         `;
 
         this.shadowRoot.addEventListener("change", (e) => {
@@ -144,13 +165,6 @@ export default class COMParameter extends Base {
             e.preventDefault();
             e.stopImmediatePropagation();
         };
-
-        // setTimeout(() => {
-        //     // this.value = "123";
-        //     this.parameter.dispatchEvent(
-        //         new Event("change", { bubbles: true })
-        //     );
-        // }, 1000);
     }
 
     /**
@@ -175,9 +189,16 @@ export default class COMParameter extends Base {
         return this.shadowRoot.getElementById("parameter");
     }
 
-    set value(v) {
-        this.shadowRoot.querySelector("input").value = v;
+    /**@param {{min:number,max:number}} o */
+    set minmax({ min, max }) {
+        min && (this.parameter.min = min.toString());
+        max && (this.parameter.max = max.toString());
+    }
 
+    set value(v) {
+        this.parameter.value = v;
+
+        this.parameter.dispatchEvent(new Event("input", { bubbles: true }));
         this.parameter.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
