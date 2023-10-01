@@ -1,3 +1,5 @@
+import COMGlobal from "./Global.js";
+
 import COMNetwork from "./Network.js";
 import COMChain from "./Chain.js";
 import COMModule from "./Module.js";
@@ -6,6 +8,8 @@ import COMOut from "./Out.js";
 import COMPeriphial from "./Periphial.js";
 
 import XFlex from "../layout/x-flex.js";
+
+customElements.define("com-global", COMGlobal);
 
 customElements.define("com-network", COMNetwork);
 customElements.define("com-chain", COMChain);

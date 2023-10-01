@@ -33,7 +33,11 @@ export default class COMChain extends Base {
 
         dragZone(this, COMModule);
 
-        this.shadowRoot.addEventListener("com:bus:periphial", (e) => {
+        // this.shadowRoot.addEventListener("com:bus:periphial", (e) => {
+        //     this.emmitLifeCycle({ type: "change" });
+        // });
+
+        this.shadowRoot.addEventListener("change", (e) => {
             this.emmitLifeCycle({ type: "change" });
         });
     }

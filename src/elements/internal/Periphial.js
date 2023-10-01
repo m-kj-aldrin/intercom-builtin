@@ -27,12 +27,12 @@ const PERIPHIAL_MAP = [
         nChannels: 16,
     },
     {
-        name: "midi_s_1",
+        name: "midi_s_2",
         color: "orange",
         nChannels: 16,
     },
     {
-        name: "midi_s_1",
+        name: "midi_s_3",
         color: "orange",
         nChannels: 16,
     },
@@ -67,8 +67,6 @@ export default class COMPeriphial extends Base {
     constructor() {
         super();
 
-        this.style.setProperty("--color", PERIPHIAL_MAP[0].color);
-
         this.shadowRoot.addEventListener("change", (e) => {
             if (e.target == this.pid && typeof +this.pid.value == "number") {
                 const periphialOpt = PERIPHIAL_MAP[+this.pid.value];
@@ -76,28 +74,36 @@ export default class COMPeriphial extends Base {
 
                 const nCh = PERIPHIAL_MAP[+this.pid.value].nChannels;
 
-                let chHTML = "<option selected>_</option>";
+                let chHTML = "<option selected disabled>_</option>";
                 for (let i = 0; i < nCh; i++) {
                     chHTML += `<option value="${i}">${i}</option>`;
                 }
                 this.ch.innerHTML = chHTML;
             }
 
-            this.dispatchEvent(
-                new CustomEvent("com:bus:periphial", {
-                    bubbles: true,
-                    detail: {
-                        type: "change",
-                        emitter: this,
-                    },
-                })
-            );
+            // this.dispatchEvent(
+            //     new CustomEvent("com:bus:periphial", {
+            //         bubbles: true,
+            //         detail: {
+            //             type: "change",
+            //             emitter: this,
+            //         },
+            //     })
+            // );
+            if (e.target == this.ch) {
+                this.dispatchEvent(
+                    new CustomEvent("change", {
+                        bubbles: true,
+                    })
+                );
+            }
         });
 
         this.shadowRoot.innerHTML = `
     <style>
 
         :host{
+            --color: ${PERIPHIAL_MAP[0].color};
         }
 
         x-flex {

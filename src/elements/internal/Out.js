@@ -40,7 +40,20 @@ export default class COMOut extends Base {
         </x-flex>
         `;
 
-        this.shadowRoot.addEventListener("com:bus:periphial", (e) => {
+        // this.shadowRoot.addEventListener("com:bus:periphial", (e) => {
+        //     this.emmitLifeCycle({ type: "disconnect" });
+
+        //     document.querySelectorAll("com-out").forEach((out) => {
+        //         if (out.index >= this.index) {
+        //             out.index = out.index - 1;
+        //         }
+        //     });
+
+        //     this.index = N_OUTS - 1;
+
+        //     this.emmitLifeCycle({ type: "connected" });
+        // });
+        this.shadowRoot.addEventListener("change", (e) => {
             this.emmitLifeCycle({ type: "disconnect" });
 
             document.querySelectorAll("com-out").forEach((out) => {
