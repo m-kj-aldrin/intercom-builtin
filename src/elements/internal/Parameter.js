@@ -19,6 +19,8 @@ function selectHandler(ev) {
 
     currentParamPicker.value = `[${chain.index}:${module.index}]`;
 
+    currentParamPicker.removeAttribute("data-picking");
+    document.documentElement.removeAttribute("data-picking");
     picking = false;
     window.removeEventListener("pointerdown", selectHandler);
 }
@@ -30,6 +32,8 @@ function selectHandler(ev) {
 function pickerHandler(e) {
     if (picking) return;
     picking = true;
+    document.documentElement.setAttribute("data-picking", "true");
+    e.target.setAttribute("data-picking", "source");
 
     currentPicker = e.target.getRootNode().host;
     currentParamPicker = e.target;
@@ -49,8 +53,12 @@ export default class COMParameter extends Base {
                 font-size: 0.75rem;
                 gap: 4px;
                 border-style: dashed;
+            }
 
-
+            :host([data-picking="source"]){
+                border-color: hsl(40 100% 50%);
+                border-style: solid;
+                background-color: hsl(40 100% 50% / 0.1);
             }
 
             :host([type="picker"]) #output{

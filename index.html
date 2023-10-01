@@ -38,17 +38,27 @@
 
             [draggable="true"] {
                 cursor: grab;
+                --outline-color: blue;
+                --outline-width: 1px;
             }
 
-            html:not([data-dragging])
-                [draggable="true"]:hover:not(:has([draggable="true"]:hover)) {
-                /* background-color: yellow; */
-                border-color: blue;
+            :where(
+                    html:not([data-dragging]):not([data-picking])
+                        [draggable="true"],
+                    html[data-picking]:not([data-dragging]) com-module
+                ):hover:not(:has([draggable="true"]:hover)) {
+                outline-style: solid;
+                outline-width: var(--outline-width);
+                outline-color: var(--outline-color);
             }
 
             [data-dragged] {
-                /* background-color: yellow; */
-                border-color: blue;
+                border-color: var(--border-color);
+            }
+
+            html[data-picking="true"] [draggable="true"] {
+                --outline-color: hsl(40 100% 50%);
+                --outline-width: 2px;
             }
         </style>
 
