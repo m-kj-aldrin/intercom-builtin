@@ -48,6 +48,10 @@ const selectTemplateStyle = `
         transition-delay: 0ms,200ms;
     }
 
+    #options[data-direction="up"]{
+        bottom: 0;
+    }
+
     :host([open]) #options{
         display: flex;
         pointer-events: unset;
@@ -105,7 +109,10 @@ function clickOutsideHandler(e) {
         this.shadowRoot
             .getElementById("options")
             .style.removeProperty("display");
-        this.ontransitionend = null;
+        this.shadowRoot
+            .getElementById("options")
+            .removeAttribute("data-direction");
+        o.ontransitionend = null;
     };
 }
 
@@ -137,6 +144,30 @@ export class InputSelect extends Base {
 
                     requestAnimationFrame(() => {
                         this.toggleAttribute("open", true);
+
+                        const box = this.shadowRoot
+                            .querySelector("#options")
+                            .getBoundingClientRect();
+
+                        if (
+                            box.y + box.height + 8 >
+                            document.documentElement.clientHeight
+                        ) {
+                            console.log('up');
+                            this.shadowRoot
+                                .querySelector("#options")
+                                .setAttribute("data-direction", "up");
+                        } else {
+                            // this.shadowRoot
+                            //     .querySelector("#options")
+                            //     .removeAttribute("data-direction");
+                        }
+
+                        console.log(
+                            box.y + box.height,
+                            document.documentElement.clientHeight
+                        );
+
                         window.addEventListener(
                             "pointerdown",
                             (boundClickOutsideHandler =
@@ -151,7 +182,10 @@ export class InputSelect extends Base {
                         this.shadowRoot
                             .getElementById("options")
                             .style.removeProperty("display");
-                        this.ontransitionend = null;
+                        this.shadowRoot
+                            .getElementById("options")
+                            .removeAttribute("data-direction");
+                        o.ontransitionend = null;
                     };
 
                     window.removeEventListener(
@@ -166,6 +200,19 @@ export class InputSelect extends Base {
                     "pointerdown",
                     boundClickOutsideHandler
                 );
+
+                const o = this.shadowRoot.getElementById("options");
+                o.ontransitionend = (te) => {
+                    // console.log(te);
+                    this.shadowRoot
+                        .getElementById("options")
+                        .style.removeProperty("display");
+                    this.shadowRoot
+                        .getElementById("options")
+                        .removeAttribute("data-direction");
+                    o.ontransitionend = null;
+                };
+
                 this.removeAttribute("open");
 
                 if (this.value == e.target.value) {
