@@ -38,7 +38,7 @@
 
             [draggable="true"] {
                 cursor: grab;
-                --outline-color: blue;
+                --outline-color: #17132b;
                 --outline-width: 1px;
             }
 
@@ -70,8 +70,13 @@
                 --outline-width: 2px;
             }
 
-            ::part(parameter) {
-                /* color: blue; */
+            html[data-cursor="slide"] * {
+                cursor: ew-resize;
+                user-select: none;
+                -webkit-user-select: none;
+            }
+            html[data-cursor="slide"] {
+                --cursor: ew-resize;
             }
         </style>
 
@@ -85,5 +90,6 @@
         </style>
     </head>
     <body>
+        <!--  -->
     </body>
 </html>

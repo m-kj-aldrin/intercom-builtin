@@ -18,6 +18,8 @@ export default class COMOut extends Base {
                 flex-direction: row;
                 align-items: center;
 
+                font-size: 0.65rem;
+
                 border-color: #0002;
                 background-color: #fdfdfd;
             }
@@ -31,6 +33,7 @@ export default class COMOut extends Base {
 
             x-flex {
                 justify-content: space-between;
+                align-items: center;
             }
         </style>
 

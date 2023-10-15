@@ -6,9 +6,9 @@ export const MODULE_TYPES = {
     PTH: [],
     LFO: [
         { name: "frequency", value: 20, type: "range", min: 1, max: 60 },
-        { name: "span", value: 0.5, type: "range", min: null, max: null },
-        { name: "phase", value: 0.5, type: "range", min: null, max: null },
-        { name: "offset", value: 0.5, type: "range", min: null, max: null },
+        { name: "span", value: 0.5, type: "range" },
+        { name: "phase", value: 0.5, type: "range", min: 0, max: 1024 },
+        { name: "offset", value: 0.5, type: "range" },
         {
             name: "wave select",
             value: "sine",
@@ -17,7 +17,7 @@ export const MODULE_TYPES = {
             min: null,
             max: null,
         },
-        { name: "reset", value: 0, type: "boolean", min: null, max: null },
+        { name: "reset", value: 0, type: "boolean" },
         {
             name: "mode",
             value: 0,
@@ -26,12 +26,12 @@ export const MODULE_TYPES = {
             min: null,
             max: null,
         },
-        { name: "hold", value: 0, type: "boolean", min: null, max: null },
+        { name: "hold", value: 0, type: "boolean" },
     ],
-    PRO: [{ name: "CHNS", value: 0.5, type: "range", min: null, max: null }],
+    PRO: [{ name: "CHNS", value: 0.5, type: "range" }],
     BCH: [
-        { name: "CV", value: 0, type: "picker", min: null, max: null },
-        { name: "GT", value: 0, type: "picker", min: null, max: null },
+        { name: "CV", value: 0, type: "picker" },
+        { name: "GT", value: 0, type: "picker" },
     ],
 };
 
@@ -47,6 +47,7 @@ export default class COMModule extends Base {
             background-color: white;
             box-shadow: 0 0 4px #0002;
             border-color: #0002;
+
         }
 
         #parameters:not(:has(*)){
@@ -63,7 +64,22 @@ export default class COMModule extends Base {
 
         #outs {
             padding: 2px;
+            flex-wrap: wrap;
+
+
+            /*
+            display: grid;
+            gap: 2px;
+            grid-template-columns: min-content min-content;
+            */
         }
+
+        #outs > ::slotted(com-out) {
+            flex-grow: 1;
+        }
+
+
+
 
         #outs[empty] {
             display: none;
@@ -75,10 +91,17 @@ export default class COMModule extends Base {
 
     <x-flex id="parameters"></x-flex>
 
-    <x-flex id="outs" empty>
+    <x-flex id="outs" empty >
         <slot></slot>
     </x-flex>
+
     `;
+        // <div id="outs">
+        //     <slot></slot>
+        // </div>
+        // <x-flex id="outs" empty>
+        //     <slot></slot>
+        // </x-flex>
 
         // Waiting for a selector to solve this https://github.com/w3c/csswg-drafts/issues/6867
         this.shadowRoot.addEventListener("slotchange", (e) => {
@@ -122,12 +145,9 @@ export default class COMModule extends Base {
 
         const ps = parameters.map((p, i) => {
             const pEl = document.createElement("com-parameter");
-
-            pEl.minmax = { min: p.min, max: p.max };
-            pEl.value = p.value.toString();
-            pEl.name = p.name;
             pEl.type(p.type, p.list);
-            pEl.setAttribute("part", "parameter");
+            pEl.minmax = { min: p.min, max: p.max };
+            pEl.name = p.name;
 
             return pEl;
         });

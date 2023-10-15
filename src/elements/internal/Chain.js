@@ -28,10 +28,12 @@ export default class COMChain extends Base {
         }
     </style>
     
+    <!--
     <x-flex id="input" row>
         <com-periphial id="cv">cv</com-periphial>
         <com-periphial id="gt">gt</com-periphial>
     </x-flex>
+    -->
 
     <x-flex id="modules">
         <slot></slot>

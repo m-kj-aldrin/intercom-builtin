@@ -36,6 +36,10 @@ export default class Base extends HTMLElement {
     }
 
     connectedCallback() {
+        if (this.hasAttribute("silent")) {
+            this.removeAttribute("silent");
+            return;
+        }
         if (this._openConnection) {
             this.emmitLifeCycle({ type: "connected" });
         }

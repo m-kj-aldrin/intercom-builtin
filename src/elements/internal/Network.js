@@ -81,7 +81,7 @@ export default class COMNetwork extends Base {
                 if (emitter) {
                     s += `parameter idx: ${emitter.index}`;
                     if (type == "change") {
-                        s += ` - value: ${emitter.value}`;
+                        s += ` - value: ${emitter.normValue}`;
                     }
                     s += "\n";
                 }
@@ -96,7 +96,7 @@ export default class COMNetwork extends Base {
                     const cv = out.cv;
                     const gt = out.gt;
 
-                    s += `cv - pid: ${cv.pid.value} ch: ${cv.ch.value}\ngt - pid: ${gt.pid.value} ch: ${gt.ch.value}`;
+                    s += `cv - pid: ${cv.pid.normValue} ch: ${cv.ch.normValue}\ngt - pid: ${gt.pid.normValue} ch: ${gt.ch.normValue}`;
                 }
             }
 

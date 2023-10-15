@@ -1,3 +1,4 @@
+import { InputSelect } from "../inputs/select.js";
 import Base from "./_Base.js";
 
 const PERIPHIAL_MAP = [
@@ -69,16 +70,20 @@ export default class COMPeriphial extends Base {
 
         this.shadowRoot.addEventListener("change", (e) => {
             if (e.target == this.pid && typeof +this.pid.value == "number") {
-                const periphialOpt = PERIPHIAL_MAP[+this.pid.value];
+                const periphialOpt = PERIPHIAL_MAP[this.pid.normValue];
                 this.style.setProperty("--color", periphialOpt.color);
 
-                const nCh = PERIPHIAL_MAP[+this.pid.value].nChannels;
+                const nCh = periphialOpt.nChannels;
+                this.ch.list = [...Array(nCh)].map((_, i) => i.toString());
 
-                let chHTML = "<option selected disabled>_</option>";
-                for (let i = 0; i < nCh; i++) {
-                    chHTML += `<option value="${i}">${i}</option>`;
-                }
-                this.ch.innerHTML = chHTML;
+                // console.log([...Array(nCh).map((_, i) => i));
+                // this.ch.list = ["a", "b", "c"];
+
+                // let chHTML = "<option selected disabled>_</option>";
+                // for (let i = 0; i < nCh; i++) {
+                //     chHTML += `<option value="${i}">${i}</option>`;
+                // }
+                // this.ch.innerHTML = chHTML;
             }
 
             if (e.target == this.ch) {
@@ -94,56 +99,52 @@ export default class COMPeriphial extends Base {
     <style>
 
         :host{
-            --color: ${PERIPHIAL_MAP[0].color};
+            /*--color: ${PERIPHIAL_MAP[0].color};*/
+        }
+
+        input-select{
+            /*color: var(--color);*/
+
         }
 
         x-flex {
-            gap: 2px;
-        }
-
-        select:active{
-            outline: none;
-        }
-        select:focus{
-            outline: none;
-        }
-
-        select {
-            cursor: pointer;
-            -webkit-appearance: none;
-            border-radius: 2px;
-            padding-inline: 0.5ch;
-            padding-block: 0.125ch;
-            background-color: var(--color);
-            font-family: inherit;
-            color: inherit;
-            color: #fff;
-            border: none;
+            align-items: center;
         }
 
     </style>
 
     <x-flex row>
         <span><slot></slot></span>
-        <select id="pid" >
-            <option selected>_</option>
-            ${PERIPHIAL_MAP.map((t, i) => {
-                return `<option value="${i}">${t.name}</option>`;
-            }).join("\n")}
-        <select>
-        <select id="ch" value="3">
-            <option selected>_</option>
-        <select>
     </x-flex>
     `;
-    }
+        const pidSelect = document.createElement("input-select");
+        pidSelect.id = "pid";
+        pidSelect.list = PERIPHIAL_MAP.map((p) => p.name);
 
-    /**@type {HTMLSelectElement} */
+        const chSelect = document.createElement("input-select");
+        chSelect.id = "ch";
+
+        const x = this.shadowRoot.querySelector("x-flex");
+
+        // x.appendChild(pidSelect);
+
+        x.append(pidSelect, chSelect);
+    }
+    // <select id="pid" >
+    //     <option selected>_</option>
+    //     ${PERIPHIAL_MAP.map((t, i) => {
+    //         return `<option value="${i}">${t.name}</option>`;
+    //     }).join("\n")}
+    // <select>
+    // <select id="ch" value="3">
+    //     <option selected>_</option>
+    // <select></select>
+    /**@type {InputSelect} */
     get pid() {
         return this.shadowRoot.getElementById("pid");
     }
 
-    /**@type {HTMLSelectElement} */
+    /**@type {InputSelect} */
     get ch() {
         return this.shadowRoot.getElementById("ch");
     }
