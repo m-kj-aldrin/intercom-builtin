@@ -1,4 +1,4 @@
-import { InputSelect } from "../inputs/select.js";
+import { InputSelect } from "../flexy-input/inputs/select.js";
 import Base from "./_Base.js";
 
 const PERIPHIAL_MAP = [

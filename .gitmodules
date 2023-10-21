@@ -1,0 +1,3 @@
+[submodule "src/elements/flexy-input"]
+	path = src/elements/flexy-input
+	url = https://github.com/m-kj-aldrin/flexy-input.git

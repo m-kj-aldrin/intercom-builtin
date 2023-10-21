@@ -146,8 +146,9 @@ export default class COMModule extends Base {
         const ps = parameters.map((p, i) => {
             const pEl = document.createElement("com-parameter");
             pEl.type(p.type, p.list);
-            pEl.minmax = { min: p.min, max: p.max };
+            pEl.minmax = { min: p.min || 0, max: p.max || 128 };
             pEl.name = p.name;
+            pEl.normValue = p.value;
 
             return pEl;
         });

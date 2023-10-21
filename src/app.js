@@ -1,5 +1,6 @@
 import "./menu.js";
 // import "./elements/inputs/index.js";
+import "./elements/flexy-input/inputs/index.js";
 import "./elements/internal/index.js";
 
 document.body.innerHTML += `

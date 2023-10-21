@@ -83,6 +83,7 @@ export default class COMParameter extends Base {
 
     get value() {
         const input = this.shadowRoot.getElementById("input");
+        console.log(input, input.value);
         if (input) {
             return input.value;
         }
@@ -92,6 +93,14 @@ export default class COMParameter extends Base {
         const input = this.shadowRoot.getElementById("input");
         if (input) {
             return input.normValue;
+        }
+    }
+
+    set normValue(v) {
+        const input = this.shadowRoot.getElementById("input");
+        if (input) {
+            console.log(input);
+            input.normValue = v;
         }
     }
 
