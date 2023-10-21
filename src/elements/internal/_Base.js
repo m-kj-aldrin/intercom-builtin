@@ -14,10 +14,10 @@ export default class Base extends HTMLElement {
 
         :host {
             display: flex;
-            gap: 8px;
+            gap: 4px;
             flex-direction: column;
 
-            padding: 4px;
+            padding: 2px;
             border-radius: 2px;
 
             border: 1px currentColor solid;

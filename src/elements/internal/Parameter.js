@@ -5,6 +5,8 @@ export default class COMParameter extends Base {
     constructor() {
         super();
 
+        // this.shadowRoot.innerHTML = ""
+
         this.shadowRoot.innerHTML += `
         <style>
             :host {
@@ -15,6 +17,7 @@ export default class COMParameter extends Base {
                 font-size: 0.65rem;
                 gap: 2px;
                 border-style: dashed;
+                border-color: #0002
             }
 
             #label{
@@ -58,6 +61,8 @@ export default class COMParameter extends Base {
             case "boolean":
                 input = document.createElement("input-switch");
                 break;
+            case "momentary":
+                input = document.createElement("input-button");
         }
 
         if (input) {
@@ -99,7 +104,6 @@ export default class COMParameter extends Base {
     set normValue(v) {
         const input = this.shadowRoot.getElementById("input");
         if (input) {
-            console.log(input);
             input.normValue = v;
         }
     }

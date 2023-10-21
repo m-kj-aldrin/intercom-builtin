@@ -9,8 +9,8 @@ document.body.innerHTML += `
         <com-module type="LFO" silent></com-module>
         <com-module type="PRO" silent></com-module>
         <com-module silent>
-            <com-out></com-out>
-            <com-out></com-out>
+            <com-out silent></com-out>
+            <com-out silent></com-out>
         </com-module>
     </com-chain>
     <com-chain silent>

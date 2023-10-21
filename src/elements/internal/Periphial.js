@@ -98,8 +98,12 @@ export default class COMPeriphial extends Base {
 
         }
 
+        span {
+            align-self: center;
+        }
+
         x-flex {
-            align-items: center;
+            align-items: stretch;
         }
 
     </style>

@@ -19,8 +19,8 @@ export default class COMChain extends Base {
         }
 
         #modules {
-            padding: 8px;
-            gap: 8px;
+            padding: 2px;
+            gap: 4px;
             border-radius: 2px;
 
             border: 1px #0002 dashed;

@@ -17,7 +17,7 @@ export const MODULE_TYPES = {
             min: null,
             max: null,
         },
-        { name: "reset", value: 0, type: "boolean" },
+        { name: "reset", type: "momentary" },
         {
             name: "mode",
             value: 0,
@@ -47,6 +47,7 @@ export default class COMModule extends Base {
             background-color: white;
             box-shadow: 0 0 4px #0002;
             border-color: #0002;
+            border: none;
 
         }
 
@@ -148,7 +149,9 @@ export default class COMModule extends Base {
             pEl.type(p.type, p.list);
             pEl.minmax = { min: p.min || 0, max: p.max || 128 };
             pEl.name = p.name;
-            pEl.normValue = p.value;
+            if (p.value) {
+                pEl.normValue = p.value;
+            }
 
             return pEl;
         });

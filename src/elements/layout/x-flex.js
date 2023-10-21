@@ -9,7 +9,7 @@ export default class XFlex extends HTMLElement {
         :host{
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
             flex-grow: 1;
         }
 

@@ -26,7 +26,7 @@ export default class COMNetwork extends Base {
                 const cv = emitter.cv;
                 const gt = emitter.gt;
 
-                s += `cv - pid: ${cv.pid.value} ch: ${cv.ch.value}\ngt - pid: ${gt.pid.value} ch: ${gt.ch.value}\n`;
+                s += `cv - pid: ${cv.pid.value} ch: ${cv.ch.normValue}\ngt - pid: ${gt.pid.normValue} ch: ${gt.ch.normValue}\n`;
 
                 let modulesString = "";
                 const modules = emitter.modules;
@@ -39,7 +39,7 @@ export default class COMNetwork extends Base {
                     const parameters = module.parameters;
 
                     for (const parameter of parameters) {
-                        parametersString += `${parameter.value}:`;
+                        parametersString += `${parameter.normValue}:`;
                     }
 
                     parametersString = parametersString.slice(0, -1) + "";
@@ -66,7 +66,7 @@ export default class COMNetwork extends Base {
 
                     let parametersString = "";
                     for (const parameter of parameters) {
-                        parametersString += `${parameter.value} : `;
+                        parametersString += `${parameter.normValue} : `;
                     }
 
                     parametersString = parametersString.slice(0, -2) + "";
