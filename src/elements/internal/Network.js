@@ -104,10 +104,12 @@ export default class COMNetwork extends Base {
         });
 
         this.shadowRoot.innerHTML += `
-        <com-global></com-global>
-        <x-flex row>
-            <slot></slot>
-        </x-flex>
+    <!--
+    <com-global></com-global>
+    -->
+    <x-flex row>
+        <slot></slot>
+    </x-flex>
         `;
     }
 

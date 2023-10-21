@@ -153,7 +153,6 @@ export class InputSelect extends Base {
                             box.y + box.height + 8 >
                             document.documentElement.clientHeight
                         ) {
-                            console.log('up');
                             this.shadowRoot
                                 .querySelector("#options")
                                 .setAttribute("data-direction", "up");
@@ -162,11 +161,6 @@ export class InputSelect extends Base {
                             //     .querySelector("#options")
                             //     .removeAttribute("data-direction");
                         }
-
-                        console.log(
-                            box.y + box.height,
-                            document.documentElement.clientHeight
-                        );
 
                         window.addEventListener(
                             "pointerdown",
@@ -262,6 +256,12 @@ export class InputSelect extends Base {
 
     get normValue() {
         return this._normValue;
+    }
+
+    connectedCallback() {
+        // this.ondragstart = (e) => {
+        //     console.log(e);
+        // };
     }
 }
 

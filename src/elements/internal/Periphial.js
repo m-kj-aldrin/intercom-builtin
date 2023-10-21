@@ -75,15 +75,6 @@ export default class COMPeriphial extends Base {
 
                 const nCh = periphialOpt.nChannels;
                 this.ch.list = [...Array(nCh)].map((_, i) => i.toString());
-
-                // console.log([...Array(nCh).map((_, i) => i));
-                // this.ch.list = ["a", "b", "c"];
-
-                // let chHTML = "<option selected disabled>_</option>";
-                // for (let i = 0; i < nCh; i++) {
-                //     chHTML += `<option value="${i}">${i}</option>`;
-                // }
-                // this.ch.innerHTML = chHTML;
             }
 
             if (e.target == this.ch) {
@@ -120,25 +111,23 @@ export default class COMPeriphial extends Base {
         const pidSelect = document.createElement("input-select");
         pidSelect.id = "pid";
         pidSelect.list = PERIPHIAL_MAP.map((p) => p.name);
+        pidSelect.draggable = true;
+        pidSelect.ondragstart = (e) => {
+            e.preventDefault();
+        };
 
         const chSelect = document.createElement("input-select");
         chSelect.id = "ch";
+        chSelect.draggable = true;
+        chSelect.ondragstart = (e) => {
+            e.preventDefault();
+        };
 
         const x = this.shadowRoot.querySelector("x-flex");
 
-        // x.appendChild(pidSelect);
-
         x.append(pidSelect, chSelect);
     }
-    // <select id="pid" >
-    //     <option selected>_</option>
-    //     ${PERIPHIAL_MAP.map((t, i) => {
-    //         return `<option value="${i}">${t.name}</option>`;
-    //     }).join("\n")}
-    // <select>
-    // <select id="ch" value="3">
-    //     <option selected>_</option>
-    // <select></select>
+
     /**@type {InputSelect} */
     get pid() {
         return this.shadowRoot.getElementById("pid");
