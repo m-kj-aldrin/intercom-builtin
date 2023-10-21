@@ -63,6 +63,27 @@ export default class COMParameter extends Base {
                 break;
             case "momentary":
                 input = document.createElement("input-button");
+                break;
+            case "picker":
+                input = document.createElement("input-picker");
+                input.setPickerType({
+                    type: COMModule,
+                    fn: (target, picker) => {
+                        const parentChain = target.closest("com-chain");
+                        const val = `${parentChain.index}:${target.index}`;
+                        picker.shadowRoot.getElementById("detail").textContent =
+                            val;
+                        return val;
+                    },
+                });
+
+                // setTimeout(() => {
+                //    console.log(this.parentNode.parentNode.host);
+                // }, 100);
+
+                // console.log(this);
+                input.rejectList = [() => this.parentNode.parentNode.host];
+                break;
         }
 
         if (input) {

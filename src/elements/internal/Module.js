@@ -51,6 +51,9 @@ export default class COMModule extends Base {
 
         }
 
+        #type {
+        }
+
         #parameters:not(:has(*)){
             display:none;
         }
@@ -60,7 +63,7 @@ export default class COMModule extends Base {
         }
 
         :host([type="BCH"]) #parameters com-parameter {
-            flex-basis: 50%;
+            /*flex-basis: 50%;*/
         }
 
         #outs {
