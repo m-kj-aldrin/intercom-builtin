@@ -17,7 +17,7 @@ export const MODULE_TYPES = {
             min: null,
             max: null,
         },
-        { name: "reset", type: "momentary" },
+        { name: "reset", value: "reset", type: "momentary" },
         {
             name: "mode",
             value: 0,

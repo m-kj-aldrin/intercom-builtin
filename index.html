@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>test</title>
 
-
         <style>
             :root {
                 --col-gray: 0 0% 93%;
@@ -34,15 +33,6 @@
                 border: none;
             }
 
-            menu {
-                background-color: cornflowerblue;
-                padding: 4px;
-                position: absolute;
-            }
-
-            menu[type="chain"] {
-            }
-
             [draggable="true"] {
                 cursor: grab;
                 --outline-color: #17132b33;
@@ -59,14 +49,6 @@
                 outline-width: var(--outline-width);
                 outline-color: var(--outline-color);
             }
-
-            /* html:not([data-dragging]):not([data-picking])
-                com-module::part(parameter)::shadow {
-                color: blue;
-                outline-style: solid;
-                outline-width: var(--outline-width);
-                outline-color: var(--outline-color);
-            } */
 
             [data-dragged] {
                 border-color: var(--border-color);

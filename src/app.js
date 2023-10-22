@@ -27,3 +27,7 @@ document.body.innerHTML += `
     </com-chain>
 </com-network>
 `;
+
+document
+    .querySelector("com-module")
+    .dispatchEvent(new MouseEvent("contextmenu", { bubbles: true }));

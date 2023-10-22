@@ -1,5 +1,5 @@
 import { dragZone } from "../../drag.js";
-import COMModule from "./Module.js";
+import COMModule, { MODULE_TYPES } from "./Module.js";
 import Base from "./_Base.js";
 
 export default class COMChain extends Base {
@@ -66,6 +66,7 @@ export default class COMChain extends Base {
 
     addModule(type = "pth") {
         /**@type {COMModule} */
+        if (!(type in MODULE_TYPES)) return;
         const newModule = document.createElement("com-module");
         newModule.setAttribute("type", type);
         this.appendChild(newModule);
