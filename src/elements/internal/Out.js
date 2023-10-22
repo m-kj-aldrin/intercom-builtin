@@ -20,7 +20,7 @@ export default class COMOut extends Base {
 
                 font-size: 0.65rem;
 
-                border-color: #0002;
+                border-color: var(--border-color);
                 background-color: #fdfdfd;
             }
 

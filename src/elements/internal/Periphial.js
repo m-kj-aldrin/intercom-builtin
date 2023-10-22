@@ -91,6 +91,10 @@ export default class COMPeriphial extends Base {
 
         :host{
             /*--color: ${PERIPHIAL_MAP[0].color};*/
+
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
         input-select{
@@ -100,6 +104,7 @@ export default class COMPeriphial extends Base {
 
         span {
             align-self: center;
+            /*font-size: 0.75em;*/
         }
 
         x-flex {
@@ -109,7 +114,7 @@ export default class COMPeriphial extends Base {
     </style>
 
     <x-flex row>
-        <span><slot></slot></span>
+        <span><slot></slot>:</span>
     </x-flex>
     `;
         const pidSelect = document.createElement("input-select");

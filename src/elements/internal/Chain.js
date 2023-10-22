@@ -10,7 +10,7 @@ export default class COMChain extends Base {
     <style>
         :host {
             background-color: white;
-            border-color: #0005;
+            border: 1px var(--border-color) solid;
         }
 
         #input {
@@ -22,8 +22,7 @@ export default class COMChain extends Base {
             padding: 2px;
             gap: 4px;
             border-radius: 2px;
-
-            border: 1px #0002 dashed;
+            border:none;
             background-color: #f9f9f9;
         }
     </style>

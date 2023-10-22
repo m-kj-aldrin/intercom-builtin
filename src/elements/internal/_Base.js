@@ -20,7 +20,7 @@ export default class Base extends HTMLElement {
             padding: 2px;
             border-radius: 2px;
 
-            border: 1px #0005 solid;
+            border: 1px var(--border-color) solid;
         }
 
     </style>

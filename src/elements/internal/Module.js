@@ -48,7 +48,7 @@ export default class COMModule extends Base {
             box-shadow: 0 0 4px #0002;
             border-color: #0002;
             border: none;
-
+            padding: 4px;
         }
 
         #type {
@@ -59,7 +59,7 @@ export default class COMModule extends Base {
         }
 
         :host([type="BCH"]) #parameters {
-            flex-direction: row;
+            /*flex-direction: row;*/
         }
 
         :host([type="BCH"]) #parameters com-parameter {
@@ -79,7 +79,7 @@ export default class COMModule extends Base {
         }
 
         #outs > ::slotted(com-out) {
-            flex-grow: 1;
+            flex-grow: 0;
         }
 
 
@@ -95,7 +95,7 @@ export default class COMModule extends Base {
 
     <x-flex id="parameters"></x-flex>
 
-    <x-flex id="outs" empty >
+    <x-flex id="outs" empty>
         <slot></slot>
     </x-flex>
 

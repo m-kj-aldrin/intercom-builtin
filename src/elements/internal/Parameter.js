@@ -16,11 +16,9 @@ export default class COMParameter extends Base {
 
                 font-size: 0.65rem;
                 gap: 2px;
-                border-style: dashed;
-                border-color: #0002
-            }
-
-            #label{
+                border-style: solid;
+                /*border-color: hsl(var(--col-gray));*/
+                border-color: var(--border-color);
             }
         </style>
         <div id="label"></div>
@@ -52,7 +50,7 @@ export default class COMParameter extends Base {
         switch (value) {
             case "range":
                 input = document.createElement("input-range");
-                input.width = 32;
+                input.width = 64;
                 break;
             case "select":
                 input = document.createElement("input-select");
@@ -76,12 +74,6 @@ export default class COMParameter extends Base {
                         return val;
                     },
                 });
-
-                // setTimeout(() => {
-                //    console.log(this.parentNode.parentNode.host);
-                // }, 100);
-
-                // console.log(this);
                 input.rejectList = [() => this.parentNode.parentNode.host];
                 break;
         }
