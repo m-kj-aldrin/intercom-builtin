@@ -45,6 +45,8 @@ function networkMenu(e) {
         },
     });
 
+    menu.contextTarget = e.target;
+
     menu.style.left = `${x}px`;
     menu.style.top = `${y}px`;
 
@@ -75,6 +77,8 @@ function chainMenu(e) {
         },
     });
 
+    menu.contextTarget = e.target;
+
     menu.style.left = `${x}px`;
     menu.style.top = `${y}px`;
 
@@ -104,6 +108,7 @@ function moduleMenu(e) {
             },
         },
     });
+    menu.contextTarget = e.target;
 
     menu.style.left = `${x}px`;
     menu.style.top = `${y}px`;
@@ -127,6 +132,8 @@ function outMenu(e) {
             },
         },
     });
+
+    menu.contextTarget = e.target;
 
     menu.style.left = `${x}px`;
     menu.style.top = `${y}px`;

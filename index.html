@@ -54,9 +54,16 @@
                 border-color: var(--border-color);
             }
 
-            html[data-picking="true"] [draggable="true"] {
+            /* html[data-picking] [draggable="true"] {
                 --outline-color: hsl(40 100% 50%);
                 --outline-width: 2px;
+                cursor: crosshair;
+            } */
+
+            html[data-picking] com-module {
+                --outline-color: hsl(40 100% 50%);
+                --outline-width: 2px;
+                cursor: crosshair;
             }
 
             html[data-cursor="slide"] * {
@@ -66,6 +73,10 @@
             }
             html[data-cursor="slide"] {
                 --cursor: ew-resize;
+            }
+
+            [context-target] {
+                outline: 1px cornflowerblue solid;
             }
         </style>
 

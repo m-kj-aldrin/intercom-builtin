@@ -174,6 +174,7 @@ export default class COMModule extends Base {
 
     addOut() {
         const newOut = document.createElement("com-out");
+        // newOut.toggleAttribute("silent", true);
         this.appendChild(newOut);
     }
 

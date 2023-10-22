@@ -27,6 +27,7 @@ let boundOutsideClickHandler;
 
 function outsideClickHandler(e) {
     if (e.target == this) return;
+    this._target.removeAttribute("context-target");
     this.remove();
     window.removeEventListener("pointerdown", boundOutsideClickHandler);
 }
@@ -43,6 +44,9 @@ export class MenuContext extends HTMLElement {
             "pointerdown",
             (boundOutsideClickHandler = outsideClickHandler.bind(this))
         );
+
+        /**@private */
+        this._target = null;
     }
 
     /**
@@ -69,15 +73,19 @@ export class MenuContext extends HTMLElement {
         }
 
         this.shadowRoot.addEventListener("change", (e) => {
-            // console.log(e.target, e.target.value);
-            // console.log(e.target.getAttribute("data-action"));
             const action = o[e.target.getAttribute("data-action")].action;
             action(e.target.value);
-            // o[e.target.value].action(e.target.value);
+            this._target.removeAttribute("context-target");
             this.remove();
         });
 
         this.shadowRoot.querySelector("div").innerHTML = "";
         this.shadowRoot.querySelector("div").append(...els);
+    }
+
+    /**@param {HTMLElement} t */
+    set contextTarget(t) {
+        this._target = t;
+        t.toggleAttribute("context-target", true);
     }
 }

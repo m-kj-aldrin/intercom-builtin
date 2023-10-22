@@ -28,6 +28,6 @@ document.body.innerHTML += `
 </com-network>
 `;
 
-document
-    .querySelector("com-module")
-    .dispatchEvent(new MouseEvent("contextmenu", { bubbles: true }));
+// document
+//     .querySelector("com-module")
+//     .dispatchEvent(new MouseEvent("contextmenu", { bubbles: true }));
