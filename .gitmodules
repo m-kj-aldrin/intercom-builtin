@@ -1,3 +1,6 @@
 [submodule "src/elements/flexy-input"]
 	path = src/elements/flexy-input
 	url = https://github.com/m-kj-aldrin/flexy-input.git
+[submodule "src/intercom-parser"]
+	path = src/intercom-parser
+	url = https://github.com/m-kj-aldrin/intercom-parser.git
