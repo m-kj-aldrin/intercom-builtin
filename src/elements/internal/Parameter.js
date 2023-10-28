@@ -36,11 +36,11 @@ export default class COMParameter extends Base {
     }
 
     connectedCallback() {
-        this.draggable = true;
-        this.ondragstart = (e) => {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-        };
+        // this.draggable = true;
+        // this.ondragstart = (e) => {
+        //     e.preventDefault();
+        //     e.stopImmediatePropagation();
+        // };
     }
 
     /**@param {string} value */
@@ -83,6 +83,12 @@ export default class COMParameter extends Base {
             const container = this.shadowRoot.getElementById("input-container");
             container.innerHTML = "";
             container.appendChild(input);
+
+            input.draggable = true;
+            input.ondragstart = (e) => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            };
         }
     }
 

@@ -58,35 +58,18 @@ export default class COMModule extends Base {
             display:none;
         }
 
-        :host([type="BCH"]) #parameters {
-            /*flex-direction: row;*/
-        }
-
-        :host([type="BCH"]) #parameters com-parameter {
-            /*flex-basis: 50%;*/
-        }
 
         #outs {
             padding: 2px;
             flex-wrap: wrap;
-
-
-            /*
-            display: grid;
-            gap: 2px;
-            grid-template-columns: min-content min-content;
-            */
         }
 
         #outs > ::slotted(com-out) {
             flex-grow: 0;
         }
 
-
-
-
-        #outs[empty] {
-            display: none;
+        :host(:empty) #outs{
+            padding: 0;
         }
 
     </style>
@@ -95,28 +78,22 @@ export default class COMModule extends Base {
 
     <x-flex id="parameters"></x-flex>
 
-    <x-flex id="outs" empty>
+    <x-flex id="outs" part="outs">
         <slot></slot>
     </x-flex>
 
     `;
-        // <div id="outs">
-        //     <slot></slot>
-        // </div>
-        // <x-flex id="outs" empty>
-        //     <slot></slot>
-        // </x-flex>
 
         // Waiting for a selector to solve this https://github.com/w3c/csswg-drafts/issues/6867
-        this.shadowRoot.addEventListener("slotchange", (e) => {
-            if (!this.children.length) {
-                this.shadowRoot
-                    .getElementById("outs")
-                    .toggleAttribute("empty", true);
-            } else {
-                this.shadowRoot.getElementById("outs").removeAttribute("empty");
-            }
-        });
+        // this.shadowRoot.addEventListener("slotchange", (e) => {
+        //     if (!this.children.length) {
+        //         this.shadowRoot
+        //             .getElementById("outs")
+        //             .toggleAttribute("empty", true);
+        //     } else {
+        //         this.shadowRoot.getElementById("outs").removeAttribute("empty");
+        //     }
+        // });
 
         /**@type {ModuleTypes} */
         this._type = "PTH";

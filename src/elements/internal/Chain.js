@@ -34,7 +34,7 @@ export default class COMChain extends Base {
     </x-flex>
     -->
 
-    <x-flex id="modules">
+    <x-flex id="modules" part="modules">
         <slot></slot>
     </x-flex>
     `;

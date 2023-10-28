@@ -27,6 +27,9 @@
                 white-space: nowrap;
 
                 position: relative;
+
+                font-family: monospace;
+                font-weight: 100;
             }
 
             input {
@@ -54,12 +57,6 @@
                 border-color: var(--border-color);
             }
 
-            /* html[data-picking] [draggable="true"] {
-                --outline-color: hsl(40 100% 50%);
-                --outline-width: 2px;
-                cursor: crosshair;
-            } */
-
             html[data-picking] com-module {
                 --outline-color: hsl(40 100% 50%);
                 --outline-width: 2px;
@@ -76,20 +73,23 @@
             }
 
             [context-target] {
-                outline: 1px cornflowerblue solid;
+                outline: 1px cornflowerblue solid !important;
+            }
+
+            html[data-dragging].COM-MODULE com-chain::part(modules) {
+                background-color: hsl(42 95% 85% / 0.25);
+            }
+
+            html[data-dragging].COM-OUT com-module::part(outs) {
+                background-color: hsl(42 95% 85% / 0.25);
+            }
+
+            html[data-dragging].COM-OUT com-module:empty::part(outs) {
+                padding: 2px;
             }
         </style>
 
         <script src="src/app.js" type="module"></script>
-
-        <style>
-            body {
-                font-family: monospace;
-                font-weight: 100;
-            }
-        </style>
     </head>
-    <body>
-        <!--  -->
-    </body>
+    <body></body>
 </html>

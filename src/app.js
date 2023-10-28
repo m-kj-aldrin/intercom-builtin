@@ -12,11 +12,6 @@ document.body.innerHTML += `
             <com-out silent></com-out>
             <com-out silent></com-out>
             <com-out silent></com-out>
-            <com-out silent></com-out>
-            <com-out silent></com-out>
-            <com-out silent></com-out>
-            <com-out silent></com-out>
-            <com-out silent></com-out>
         </com-module>
     </com-chain>
     <com-chain silent>
