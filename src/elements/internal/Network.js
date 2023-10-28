@@ -94,13 +94,14 @@ export default class COMNetwork extends Base {
 
                 if (type == "connected") {
                     const cv = out.cv;
-                    const gt = out.gt;
+                    // const gt = out.gt;
+                    s += `pid: ${cv.pid.normValue} ch: ${cv.ch.normValue}`;
 
-                    s += `cv - pid: ${cv.pid.normValue} ch: ${cv.ch.normValue}\ngt - pid: ${gt.pid.normValue} ch: ${gt.ch.normValue}`;
+                    // s += `cv - pid: ${cv.pid.normValue} ch: ${cv.ch.normValue}\ngt - pid: ${gt.pid.normValue} ch: ${gt.ch.normValue}`;
                 }
             }
 
-            console.log(s);
+            // console.log(s);
         });
 
         this.shadowRoot.innerHTML += `
@@ -116,5 +117,6 @@ export default class COMNetwork extends Base {
     addChain() {
         const newChain = document.createElement("com-chain");
         this.appendChild(newChain);
+        return newChain;
     }
 }

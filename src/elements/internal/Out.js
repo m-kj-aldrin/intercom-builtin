@@ -38,8 +38,7 @@ export default class COMOut extends Base {
         </style>
 
         <x-flex id="" row>
-            <com-periphial id="cv">cv</com-periphial>
-            <com-periphial id="gt">gt</com-periphial>
+            <com-periphial id="cv"></com-periphial>
         </x-flex>
         `;
 

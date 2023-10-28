@@ -103,11 +103,15 @@ export default class COMParameter extends Base {
         }
     }
 
-    set value(v) {}
+    set value(v) {
+        const input = this.shadowRoot.getElementById("input");
+        if (input) {
+            input.value = v;
+        }
+    }
 
     get value() {
         const input = this.shadowRoot.getElementById("input");
-        console.log(input, input.value);
         if (input) {
             return input.value;
         }

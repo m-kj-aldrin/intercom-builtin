@@ -70,5 +70,6 @@ export default class COMChain extends Base {
         const newModule = document.createElement("com-module");
         newModule.setAttribute("type", type);
         this.appendChild(newModule);
+        return newModule;
     }
 }

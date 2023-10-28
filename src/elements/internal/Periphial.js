@@ -114,7 +114,7 @@ export default class COMPeriphial extends Base {
     </style>
 
     <x-flex row>
-        <span><slot></slot>:</span>
+        <span><slot></slot></span>
     </x-flex>
     `;
         const pidSelect = document.createElement("input-select");
@@ -123,6 +123,7 @@ export default class COMPeriphial extends Base {
         pidSelect.draggable = true;
         pidSelect.ondragstart = (e) => {
             e.preventDefault();
+            e.stopImmediatePropagation();
         };
 
         const chSelect = document.createElement("input-select");
@@ -130,6 +131,7 @@ export default class COMPeriphial extends Base {
         chSelect.draggable = true;
         chSelect.ondragstart = (e) => {
             e.preventDefault();
+            e.stopImmediatePropagation();
         };
 
         const x = this.shadowRoot.querySelector("x-flex");
@@ -142,8 +144,24 @@ export default class COMPeriphial extends Base {
         return this.shadowRoot.getElementById("pid");
     }
 
+    /**@param {number} v */
+    set pid(v) {
+        this.shadowRoot.getElementById("pid").normValue = v;
+
+        const periphialOpt = PERIPHIAL_MAP[this.pid.normValue];
+        this.style.setProperty("--color", periphialOpt.color);
+
+        const nCh = periphialOpt.nChannels;
+        this.ch.list = [...Array(nCh)].map((_, i) => i.toString());
+    }
+
     /**@type {InputSelect} */
     get ch() {
         return this.shadowRoot.getElementById("ch");
+    }
+
+    /**@param {number} v */
+    set ch(v) {
+        this.shadowRoot.getElementById("ch").normValue = v;
     }
 }

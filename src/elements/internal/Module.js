@@ -62,6 +62,10 @@ export default class COMModule extends Base {
         #outs {
             padding: 2px;
             flex-wrap: wrap;
+            border-width: 1.5px;
+            border-style: dashed;
+            border-color: var(--border-color);
+            background-color: #f0f0f0;
         }
 
         #outs > ::slotted(com-out) {
@@ -70,6 +74,7 @@ export default class COMModule extends Base {
 
         :host(:empty) #outs{
             padding: 0;
+            border: none;
         }
 
     </style>
@@ -153,6 +158,7 @@ export default class COMModule extends Base {
         const newOut = document.createElement("com-out");
         // newOut.toggleAttribute("silent", true);
         this.appendChild(newOut);
+        return newOut;
     }
 
     remove() {
